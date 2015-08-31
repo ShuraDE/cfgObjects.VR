@@ -1,4 +1,4 @@
-//source: http://killzonekid.com/arma-3-bounding-box-utility/
+//based on source/creator: http://killzonekid.com/arma-3-bounding-box-utility/
 private ["_obj","_bb","_bbx","_bby","_bbz","_arr","_y","_z"];
     _obj = _this;
     _bb = {
@@ -58,11 +58,10 @@ private ["_obj","_bb","_bbx","_bby","_bbz","_arr","_y","_z"];
     }];
 
 //return length, width and height (in relation zum objekt)
-_bboxr = boundingBoxReal _obj;
-_p1 = _bboxr select 0;
-_p2 = _bboxr select 1;
+_bbox = boundingBox _obj;
+_p1 = _bbox select 0;
+_p2 = _bbox select 1;
 _maxWidth = abs ((_p2 select 0) - (_p1 select 0));
 _maxLength = abs ((_p2 select 1) - (_p1 select 1));
 _maxHeight = abs ((_p2 select 2) - (_p1 select 2));
-[str([_maxLength, _maxWidth, _maxHeight])] call ADL_DEBUG;
-[_maxLength, _maxWidth, _maxHeight];
+[_maxLength, _maxWidth, _maxHeight, _bbox];

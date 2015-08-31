@@ -5,12 +5,14 @@ class Mission
 	{
 		"map_vr",
 		"A3_Characters_F_BLUFOR",
-		"a3_characters_f"
+		"a3_characters_f",
+		"CABuildings2_Misc_Cargo"
 	};
 	addOnsAuto[]=
 	{
 		"A3_Characters_F_BLUFOR",
 		"a3_characters_f",
+		"CABuildings2_Misc_Cargo",
 		"map_vr"
 	};
 	randomSeed=5963549;
@@ -54,6 +56,19 @@ class Mission
 					synchronizations[]={0};
 				};
 			};
+		};
+	};
+	class Vehicles
+	{
+		items=1;
+		class Item0
+		{
+			position[]={10.388966,5,-106.72363};
+			id=1;
+			side="EMPTY";
+			vehicle="Land_Misc_Cargo2E";
+			skill=0.60000002;
+			text="dummy";
 		};
 	};
 	class Markers
