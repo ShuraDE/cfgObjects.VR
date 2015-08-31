@@ -26,12 +26,16 @@ _scr = false;
 
 //some mods havnt define correct vehicleClass like ""land_Objects84","House","SAR_ru_architect""
 // genMacro is "House", vehcileClass "SAR_ru_architect"
-_cfg= "(
+_cfg_xxx= "(
   (getNumber (_x >> 'scope') >= 2) &&
   {getText (_x >> '_generalMacro') in ['House','NonStrategic']
     ||
     {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'Ship', 'Static','Objects','Support','Items','Structures','Wrecks','Fortifications','misc','Misc','A3_Trees','A3_Stones','A3_Plants','A3_Bush','Flag','Training','Objects_Sports','Structures_Sports','Structures_VR','Furniture','Cargo','Tents','Small_items','Dead_bodies','Garbage','Structures_Town','Military','Market','Objects_Airport','Container','Helpers','ItemsUniforms','ItemsHeadgear','ItemsVests','WeaponAccessories','Backpacks','Schild','Signs','Structures_Walls','Structures_Fences']}
   }
+)" configClasses (configFile >> "CfgVehicles");
+_cfg= "(
+  (getNumber (_x >> 'scope') >= 2) &&
+    {getText (_x >> 'vehicleClass') in ['Car']}
 )" configClasses (configFile >> "CfgVehicles");
 
 _cfgAll = "(
@@ -109,7 +113,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
       _veh = createVehicle [_class, [0,0,0.2], [], 0, "NONE"];
       _veh enableSimulation false;
       _veh allowDamage false;
-      _veh setDir 225;
+      _veh setDir 180;
       _vehTD = nil;
 
       if (_debugTextExit) then { testObj = _veh; };
@@ -117,15 +121,16 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
       if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {
 
          try {
-           _sizes = _veh call FNC_SHOW_BOUNDINGBOX;
+           _bbox = boundingBox _veh;
+           _maxWidth = abs ((_bbox select 1 select 0) - (_bbox select 0 select 0));
+           _maxLength = abs ((_bbox select 1 select 1) - (_bbox select 0 select 1));
+           _maxHeight = abs ((_bbox select 1 select 2) - (_bbox select 0 select 2));
+           _sizes = [_maxWidth,_maxLength,_maxHeight];
+           [[[_veh,1]]] call ADL_DRAW_CHART;
+           [_veh] call ADL_PL_POS;
 
-           //player/camera distance:
-           _viewX = 0;
-           _viewY = (_sizes select 1);
-           _viewZ = (_sizes select 2);
-           //player setPosASL AGLToASL(_veh modelToWorld [_viewX, _viewY, _viewZ]);
-           player setPosASL [0, (_viewY+PLAYER_DEFAULT_DIST)*-1, _viewZ + 10];
 
+/*
            //create 2nd one with different dir & up if enabled
            if (ENABLE_2ND_VEH_TD) then {
              _vehTD = createVehicle [_class, [-20, 20, _viewZ / 2], [], 0, "NONE"];
@@ -135,7 +140,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
              _vehTD setVectorUp [-(vectorUp _vehTD select 2), -(vectorUp _vehTD select 0), -(vectorUp _vehTD select 0)]
 
            };
-
+*/
            //take screen shoot if enabled
            if (ENABLE_SCREEN) then {
              sleep 0.5;
@@ -147,7 +152,14 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
 
 
-           if (ENABLE_2ND_VEH_TD) then { deleteVehicle _vehTD; };
+/*
+           if (ENABLE_2ND_VEH_TD) then {
+             {
+                 deleteVehicle _x;
+             } forEach attachedObjects _veh;
+             deleteVehicle _vehTD;
+           };
+*/
          }
          catch {
            ["data: " + str(_i) + str(_dataBase+_dataTransport+_dataVehicle)]  call ADL_DEBUG;
@@ -157,6 +169,9 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
          //test exit
          if (_debugTextExit) exitWith { true; };
 
+         {
+             deleteVehicle _x;
+         } forEach attachedObjects _veh;
          deleteVehicle _veh;
          _veh = nil;
          sleep 0.2;

@@ -1,13 +1,21 @@
 
+//input array [[obj1, side] , [obj2, side]]   side can be 1 or 2  (front / side)
+_targets = _this select 0;
+
+//clear up
 removeAllMissionEventHandlers "Draw3D";
 lines = [];
+_points = [];
+_bShowChart = false;
+_minSize = 1;
 
-
+//for each object
 _createChart = {
 
   _targetObj = _this select 0;
   //values = 1 = front, 2 = side
   _side = _this select 1;  //draw chart on rear side
+
 
   {
       deleteVehicle _x;
@@ -36,6 +44,7 @@ _createChart = {
   _bbox = boundingBox _targetObj call _bb;
   _bboxr = boundingBoxReal _targetObj call _bb;
 
+  //add bbox lines to chart lines
   for "_i" from 0 to 7 step 2 do {
       lines pushBack ([_bbox select _i] + [_bbox select (_i + 2)] + [[0,0,1,1]]);
       lines pushBack ([_bboxr select _i] + [_bboxr select (_i + 2)] + [[0,1,0,1]]);
@@ -53,12 +62,10 @@ _createChart = {
   _p1 = _bbox select 0;
   _p2 = _bbox select 1;
 
-  {
-      deleteVehicle _x;
-  } forEach  attachedObjects _targetObj;
-
-  _points = [];
-
+  //check if object large enough to show chart
+  _bShowChart = ((_p2 select 0) > _minSize || (_p2 select 1) > _minSize || (_p2 select 2) > _minSize);
+  hint format["%1\%2",_bShowChart,str(_p2)];
+  //set spherenodes with color
   _pointLayout = {
     _target = _this select 0;
     _loc = _this select 1;
@@ -87,14 +94,7 @@ _createChart = {
     } forEach _loc select 0;
 
     //add each node with sister and color
-
     for "_i" from 0 to (count _loc - 1) step 2 do {
-      /*
-      _tmpLines = [];
-      _tmpLines pushBack (_loc select _i);
-      _tmpLines pushBack (_loc select (_i+1));
-      _tmpLines pushBack _lineColr;
-      */
       lines pushBack ([(_target modelToWorld (_loc select _i))] + [(_target modelToWorld (_loc select (_i+1)))] + [_lineColr]);
     };
 
@@ -141,14 +141,16 @@ _createChart = {
     };
   };
 
-  switch (_side) do {
-    case (1): { //front, draw back sided
-      [_targetObj, [_p1 select 0, _p2 select 1, _p1 select 2], _p2, 1] call _rearPoints;
+  if (_bShowChart) then {
+    switch (_side) do {
+      case (1): { //front, draw back sided
+        [_targetObj, [_p1 select 0, _p2 select 1, _p1 select 2], _p2, 1] call _rearPoints;
+      };
     };
   };
 };
 
-_targets = _this select 0;
+
 [_targets] call ADL_DEBUG;
 {
     [_x select 0, _x select 1]  call _createChart;

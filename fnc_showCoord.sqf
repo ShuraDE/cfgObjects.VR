@@ -93,8 +93,3 @@ for[{_i = 0}, {_i <= floor(_p2 select 1)}, {_i=_i+1}] do {
     (points select (count points - 1)) setObjectTexture [0,'#(argb,8,8,3)color(0,0,1,1)']
   };
 };
-
-hint str(_targetObj modelToWorld _p1 );
-if (!isNil("tmp")) then { deleteVehicle tmp;};
-tmp = "Sign_sphere10cm_EP1" createVehicle (_targetObj modelToWorld _p1);
-tmp setPosASL (_targetObj modelToWorld _p1);

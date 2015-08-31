@@ -1,6 +1,7 @@
 DEBUG_OUTPUT = true;
 ADL_DEBUG = compile preprocessFileLineNumbers "fnc_debug.sqf";
-ADL_COORD = compile preprocessFileLineNumbers "fnc_showCoord.sqf";
+ADL_DRAW_CHART = compile preprocessFileLineNumbers "fnc_drawChart.sqf";
+ADL_PL_POS = compile preprocessFileLineNumbers "fnc_setPlayerPos.sqf";
 FNC_SCR_CAP = compile preprocessFileLineNumbers "fnc_makeScreen.sqf";
 FNC_SHOW_BOUNDINGBOX = compile preprocessFileLineNumbers "fnc_showBoundingBox.sqf";
 
