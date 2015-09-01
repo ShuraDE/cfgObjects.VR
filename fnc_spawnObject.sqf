@@ -1,5 +1,5 @@
 _objClass = _this select 0;
-_spaceBetweenObjects = 2;
+_spaceBetweenObjects = 1;
 _zOffSet = 0.2;
 
 [] call ADL_CLEAN_UP;
@@ -14,57 +14,60 @@ _zOffSet = 0.2;
 
 
 //primary object
-_veh = createVehicle [_objClass, [0,0.1,_zOffSet], [], 0, "CAN_COLLIDE"];
-_veh enableSimulation false;
-_veh allowDamage false;
-_veh setDir 180; //warning: boundingbox points -> modelToWorld calc is reversed with  reason model is turn around !!  -.-
+_obj = createVehicle [_objClass, [0,0.1,_zOffSet], [], 0, "CAN_COLLIDE"];
+_obj enableSimulation false;
+_obj allowDamage false;
+_obj setDir 180; //warning: boundingbox points -> modelToWorld calc is reversed with  reason model is turn around !!  -.-
 hint _objClass;
-//set player view
-[_veh] call ADL_PL_POS;
+
+//get sizes for calculation
+_bbox = boundingBox _obj;
+_maxWidth = abs ((_bbox select 1 select 0) - (_bbox select 0 select 0));
+_maxLength = abs ((_bbox select 1 select 1) - (_bbox select 0 select 1));
+_maxHeight = abs ((_bbox select 1 select 2) - (_bbox select 0 select 2));
+_radius = (_obj modelToWorld [0,0,0]) distance (_obj modelToWorld [((_bbox select 0 )select 0), ((_bbox select 1) select 1), 0]);
+_worldLength = abs((_obj modelToWorld [0,((_bbox select 1) select 1) * 2,0]) select 1) - (getPosASL _obj select 0);
+_worldWidth =  abs((_obj modelToWorld [((_bbox select 1) select 0) * 2,0,0]) select 0) - (getPosASL _obj select 1);
+//_worldHeight = abs((_obj modelToWorld [0,0,(((_bbox select 1) select 2) max ((_bbox select 0) select 2)) * 2]) select 2) - _zOffSet;
+_worldHeight = (getPosASL _obj select 2) - _zOffSet;
+_sizes = [[_maxWidth,_maxLength,_maxHeight],_radius,[_worldLength,_worldWidth,_worldHeight], _bbox];
+
+
 
 try {
-  //get sizes for calculation
-  _bbox = boundingBox _veh;
-  _maxWidth = abs ((_bbox select 1 select 0) - (_bbox select 0 select 0));
-  _maxLength = abs ((_bbox select 1 select 1) - (_bbox select 0 select 1));
-  _maxHeight = abs ((_bbox select 1 select 2) - (_bbox select 0 select 2));
-  _radius = (_veh modelToWorld [0,0,0]) distance (_veh modelToWorld [((_bbox select 0 )select 0), ((_bbox select 1) select 1), 0]);
-  _worldLength = abs((_veh modelToWorld [0,((_bbox select 1) select 1) * 2,0]) select 1) - (getPosASL _veh select 0);
-  _worldWidth =  abs((_veh modelToWorld [((_bbox select 1) select 0) * 2,0,0]) select 0) - (getPosASL _veh select 1);
-  _worldHeight = abs((_veh modelToWorld [0,0,((_bbox select 1) select 2) * 2]) select 2) - (getPosASL _veh select 2);
 
   //right down object
   //distance between middlepoint to corner + space between + half width
   _x = _radius + _spaceBetweenObjects + (_maxWidth/2);
   _pos = [ _x, 0, _zOffSet];
-  _veh_rd = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
-  _veh_rd enableSimulation false;
-  _veh_rd allowDamage false;
-  _veh_rd setDir 135;
+  _obj_rd = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
+  _obj_rd enableSimulation false;
+  _obj_rd allowDamage false;
+  _obj_rd setDir 135;
 
   //left down object
   _x = (_radius*-1) - _spaceBetweenObjects - (_maxWidth/2);
   _pos = [ _x, 0, _zOffSet];
-  _veh_ld = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
-  _veh_ld enableSimulation false;
-  _veh_ld allowDamage false;
-  _veh_ld setDir 225;
+  _obj_ld = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
+  _obj_ld enableSimulation false;
+  _obj_ld allowDamage false;
+  _obj_ld setDir 225;
 
   //dir 0 center behind
   _y = (_worldLength*2) + _spaceBetweenObjects + _worldHeight;
   _pos = [ 0, _y, _zOffSet];
-  _veh_cb = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
-  _veh_cb enableSimulation false;
-  _veh_cb allowDamage false;
-  _veh_cb setDir 0;
+  _obj_cb = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
+  _obj_cb enableSimulation false;
+  _obj_cb allowDamage false;
+  _obj_cb setDir 0;
 
 
   //topdown view in upper left corner
   _x = (_spaceBetweenObjects + _maxWidth) *-1;
-  _z = _zOffSet + _worldHeight * 2;
-  _veh_td = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
-  _veh_td enableSimulation false;
-  _veh_td allowDamage false;
+  _z = _zOffSet + _worldHeight;
+  _obj_td = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+  _obj_td enableSimulation false;
+  _obj_td allowDamage false;
 
 
   _setupVector =  {
@@ -81,29 +84,43 @@ try {
     _vecuy = sin(_dir) * cos(_angle) * sin(_pitch);
     _vecuz = cos(_angle) * cos(_pitch);
 
-    _veh_td setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
+    _obj_td setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
   };
+  //correct orientation from player view
+  _angle_td = ((( getPosASL _obj_td) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_td) select 0) - (( getPosASL player) select 0));
 
-  [] call _setupVector;
+  //[] call _setupVector;
+
+
+  _obj_td setVectorUp [1, cos (_angle_td),0];
+  _obj_td setVectorDir [1, 0, 0];
+
+  testObj = _obj_td;
+
 
   /*
-  _veh_td setVectorDirAndUp [[1,0,0],[0,-1,0]];
+  _obj_td setVectorDirAndUp [[1,0,0],[0,-1,0]];
   sleep 0.2;
 */
   //side view upper right corner
   _x = (_spaceBetweenObjects + _maxWidth);
-  _z = _zOffSet + _worldHeight * 2;
-  _veh_s = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
-  _veh_s enableSimulation false;
-  _veh_s allowDamage false;
-  _veh_s setDir 270;
+  _z = _zOffSet + _worldHeight;
+  _obj_s = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+  _obj_s enableSimulation false;
+  _obj_s allowDamage false;
+  //correct orientation from player view
+  _angle_s = ((( getPosASL _obj_s) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_s) select 0) - (( getPosASL player) select 0));
 
-  //setup again, didnt do it first time :-/
-  sleep 1;
-  [] call _setupVector;
+  //_obj_s setDir 270;
+  _obj_s setDir (180 - _angle_s);
+
 }
 catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;
 };
+
+//set player view
+[_obj, _sizes, _zOffSet, _spaceBetweenObjects] call ADL_PL_POS;
+
 //return major spawn object
-_veh;
+[_obj,_sizes];

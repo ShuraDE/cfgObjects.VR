@@ -43,7 +43,7 @@ _cfgAll = "(
 )" configClasses (configFile >> "CfgVehicles");
 
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,vehicleClass,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles,[_x,_y,_z,_radius,_worldLength,_worldWidth,_worldHeight],_scrshot_file"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,vehicleClass,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles,[[_x,_y,_z],_radius,[_worldLength,_worldWidth,_worldHeight],[_boundingBoxPoints]],_scrshot_file"] call ADL_DEBUG;
 
 
 [format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
@@ -130,26 +130,20 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
   if (_class != "" && _type != "" && _description != "") then {
     try {
-      _veh = [_class] call ADL_SPAWN_OBJ;
+      _objSpawn = [_class] call ADL_SPAWN_OBJ;
+
+      _veh = _objSpawn select 0;
+      _sizes = _objSpawn select 1;
+
+      testObj = _veh; //for debug
+
       _scrFile = "";
 
+      sleep 2;
 
       if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {
 
          try {
-           _bbox = boundingBox _veh;
-           _maxWidth = abs ((_bbox select 1 select 0) - (_bbox select 0 select 0));
-           _maxLength = abs ((_bbox select 1 select 1) - (_bbox select 0 select 1));
-           _maxHeight = abs ((_bbox select 1 select 2) - (_bbox select 0 select 2));
-
-
-           _radius = (_veh modelToWorld [0,0,0]) distance (_veh modelToWorld [((_bbox select 0 )select 0), ((_bbox select 1) select 1), 0]);
-           _worldLength = abs((_veh modelToWorld [0,((_bbox select 1) select 1) * 2,0]) select 1) - (getPosASL _veh select 0);
-           _worldWidth =  abs((_veh modelToWorld [((_bbox select 1) select 0) * 2,0,0]) select 0) - (getPosASL _veh select 1);
-           _worldHeight = abs((_veh modelToWorld [0,0,((_bbox select 1) select 2) * 2]) select 2) - (getPosASL _veh select 2);
-
-           _sizes = [_maxWidth,_maxLength,_maxHeight,_radius,_worldLength,_worldWidth,_worldHeight];
-
            //[[[_veh,1]]] call ADL_DRAW_CHART;
 
            //take screen shoot if enabled
@@ -183,7 +177,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
         [str(_exception)] call ADL_DEBUG;
     };
   };
-  if  (_debugTextExit && _i > 3) exitWith { true; };
+  if  (_debugTextExit && _i > 2) exitWith { true; };
 };
 ["done"] call ADL_DEBUG;
 hint ("done with " + str(count(_cfg)));
