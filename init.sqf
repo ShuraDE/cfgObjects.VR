@@ -16,7 +16,7 @@ PIC_EXT = ".png";
 PLAYER_DEFAULT_DIST = 10;
 
 ENABLE_2ND_VEH_TD = true;
-ENABLE_SCREEN = false;
+ENABLE_SCREEN = true;
 
 waitUntil {!isNil "bis_fnc_init"};
 removeAllWeapons player;

@@ -82,7 +82,6 @@ try {
     _vecuz = cos(_angle) * cos(_pitch);
 
     _turnObj setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
-
   };
 
   //right down object
@@ -106,14 +105,29 @@ try {
   _z = (_zOffSet + (_worldHeight max _worldWidth)) max 1; //for flip check height and length, min 1 up
 
   //topdown view upper center
+
+  //add a fake object, dir/up isnt correct displayed
+  _objHolder = createVehicle ["Sign_sphere10cm_EP1", [0, 5, _z], [], 0, "CAN_COLLIDE"];
+  hideObject _objHolder;
+  _objHolder allowDamage false;
+
+  _obj_td_faker = createVehicle [_objClass, [0, _worldHeight max _worldLength, _z], [], 0, "CAN_COLLIDE"];
+  _obj_td_faker allowDamage false;
+  hideObject _obj_td_faker;
+  _obj_td_faker enableSimulation false;
+  [_obj_td_faker, 180, 90] call _setupVector;
+
   _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
   _obj_td enableSimulation false;
-  _obj_td allowDamage false;
-
+  _obj_td attachTo [_objHolder, [0,0, 1]];
   [_obj_td, 180, 90] call _setupVector;
+  _obj_td allowDamage false;
+  _obj_td enableSimulation false;
+
+  _obj_td setPosASL [getPosASL _obj_td select 0, getPosASL _obj_td select 1, _z];//((_obj_td_faker modelToWorld [0,0,0]) select 2)];
+  //detach _obj_td;
 
   //side view upper right corner
-  //_x = (_spaceBetweenObjects + _maxWidth);
   _x = _radius2D + _spaceBetweenObjects + (_maxWidth/2);
   _obj_s = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
   _obj_s enableSimulation false;
@@ -124,29 +138,25 @@ try {
   //[_obj_s, (180 - _angle_s), 90] call _setupVector;
 
   //rear view upper left corner
-  //_x = (_spaceBetweenObjects + _maxWidth) * -1;
   _x = (_radius2D*-1) - _spaceBetweenObjects - (_maxWidth/2);
   _obj_r = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
   _obj_r enableSimulation false;
   _obj_r allowDamage false;
   //correct orientation from player view
   _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
-
-
   _obj_r setDir (90 - _angle_r);
   //[_obj_r,0,0,0] call FNC_ROTATE;
   //[_obj,[-10,0,0]] call fnc_SetPitchBankYaw;
-
   ////[_obj_r, (90 - _angle_r), 90] call _setupVector;
 
 
   //draw chart
   // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top
-  [[[_obj_td,4],[_obj_r,1],[_obj_s,2]]] execVM "fnc_drawChart.sqf";
+  [[[_obj_td_faker,5],[_obj_r,1],[_obj_s,2]]] execVM "fnc_drawChart.sqf";
 }
 catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;
 };
 
-//return major spawn object
+//return major spawn object with size array
 [_obj,_sizes];

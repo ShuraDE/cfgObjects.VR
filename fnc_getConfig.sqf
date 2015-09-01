@@ -26,7 +26,7 @@ _scr = false;
 
 //some mods havnt define correct vehicleClass like ""land_Objects84","House","SAR_ru_architect""
 // genMacro is "House", vehcileClass "SAR_ru_architect"
-_cfg_x= "(
+_cfg= "(
   (getNumber (_x >> 'scope') >= 2) &&
   {getText (_x >> '_generalMacro') in ['House','NonStrategic']
     ||
@@ -35,7 +35,7 @@ _cfg_x= "(
 )" configClasses (configFile >> "CfgVehicles");
 
 //für testzwecke reduzierte daten
-_cfg = "(
+_cfg_x = "(
   (getNumber (_x >> 'scope') >= 2) &&
     {getText (_x >> 'vehicleClass') in ['Car']}
 )" configClasses (configFile >> "CfgVehicles");
@@ -47,6 +47,7 @@ _cfgAll = "(
 
 
 [format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
+
 
 ["Export Data:"] call ADL_DEBUG;
 ["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles, [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldLength,_worldWidth,_worldHeight], _bbox],_scrshot_file","exp_def"] call ADL_DEBUG;
@@ -84,10 +85,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _tf_hasLRradio = getNumber((_cfg select _i) >> "tf_hasLRradio");
   _author = getText((_cfg select _i) >> "author");
 
-  _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_vehicleClass,_ttl];
-
-  _dataExtend = [_faction,_crew,_picture,_icon,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author];
-
   _cargoCoDriver = getArray((_cfg select _i) >> "cargoIsCoDriver");
   _transportSoldier = getNumber((_cfg select _i) >> "transportSoldier");
   _transportVehicle = getNumber((_cfg select _i) >> "transportVehicleCount");
@@ -98,8 +95,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _transportMaxMagazines = getNumber((_cfg select _i) >> "transportMaxMagazines");
   _transportMaxWeapons = getNumber((_cfg select _i) >> "transportMaxWeapons");
   _transportMaxBackpacks = getNumber((_cfg select _i) >> "transportMaxBackpacks");
-
-  _dataTransport = [_cargoCoDriver,_transportSoldier,_transportVehicle,_transportAmmo,_transportFuel,_transportRepair,_maximumLoad,_transportMaxMagazines,_transportMaxWeapons,_transportMaxBackpacks];
 
   _fuelCap = getNumber((_cfg select _i) >> "fuelCapacity");
   _armour = getNumber((_cfg select _i) >> "armor");
@@ -112,9 +107,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _minSpeed = getNumber((_cfg select _i) >> "minSpeed");
   _hiddenSel = getArray((_cfg select _i) >> "hiddenSelections");
   _hiddelSelTex = getArray((_cfg select _i) >> "hiddenSelectionsTextures");
-
-  _dataVehicle = [_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,_hiddenSel,_hiddelSelTex];
-
 
   // for vehicles general
   _armorStructural =  getNumber((_cfg select _i) >> "armorStructural"); //= 1;	// ranges between 1 and 4.0, default 1
@@ -139,8 +131,15 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _armorHRotor =  getNumber((_cfg select _i) >> "armorHRotor"); // = 0.7;
   _armorMissiles =  getNumber((_cfg select _i) >> "armorMissiles"); // = 1.6;
 
-  _dataArmor = [_armorStructural,_armorFuel,_armorGlass,_armorLights,_armorWheels,_armorHull,_armorTurret,_armorGun,_armorEngine,_armorTracks,_armorHead,_armorHands,_armorLegs,_armorEngine,_armorAvionics,_armorVRotor,_armorHRotor,_armorMissiles];
+  _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_vehicleClass,_ttl];
 
+  _dataExtend = [_faction,_crew,_picture,_icon,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author];
+
+  _dataTransport = [_cargoCoDriver,_transportSoldier,_transportVehicle,_transportAmmo,_transportFuel,_transportRepair,_maximumLoad,_transportMaxMagazines,_transportMaxWeapons,_transportMaxBackpacks];
+
+  _dataVehicle = [_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,_hiddenSel,_hiddelSelTex];
+
+  _dataArmor = [_armorStructural,_armorFuel,_armorGlass,_armorLights,_armorWheels,_armorHull,_armorTurret,_armorGun,_armorEngine,_armorTracks,_armorHead,_armorHands,_armorLegs,_armorEngine,_armorAvionics,_armorVRotor,_armorHRotor,_armorMissiles];
 
   /*
   ["data base: " + str(_dataBase)] call ADL_DEBUG;
@@ -152,20 +151,14 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   if (_class != "" && _type != "" && _description != "") then {
     try {
 
-      _objSpawn = [_class] call ADL_SPAWN_OBJ;
-
+      //create objects, returns major object and sizes
+      _objSpawn = [_class] call ADL_SPAWN_OBJ; //rotation wird nicht angezeigt, aber durchgeführt Oo
       _veh = _objSpawn select 0;
       _sizes = _objSpawn select 1;
 
       _scrFile = "";
-
-      sleep 2;
-
       if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {
-
          try {
-           //[[[_veh,1]]] call ADL_DRAW_CHART;
-
            //take screen shoot if enabled
            if (ENABLE_SCREEN) then {
              sleep 0.5;
@@ -180,16 +173,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
            [str(_i) + str(_dataBase+_dataExtend+_dataTransport+_dataVehicle+_dataArmor+[_sizes]), "exp_data"]  call ADL_DEBUG;
            [_class, "adl_error"] call ADL_DEBUG;
          };
-
-         //test exit
-         if (_debugTextExit) exitWith { true; };
-
-         {
-             deleteVehicle _x;
-         } forEach attachedObjects _veh;
-         deleteVehicle _veh;
-         _veh = nil;
-         sleep 0.2;
       };
     }
     catch {
@@ -197,7 +180,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
         [str(_exception)] call ADL_DEBUG;
     };
   };
-  if  (_debugTextExit && _i > 2) exitWith { true; };
+  if  (_debugTextExit && _i > 15) exitWith { true; };
 };
 ["done"] call ADL_DEBUG;
 hint ("done with " + str(count(_cfg)));
