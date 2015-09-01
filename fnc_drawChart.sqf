@@ -16,12 +16,6 @@ _createChart = {
   //values = 1 = back, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = front
   _side = _this select 1;
 
-
-  //cleanup if double called
-  {
-      deleteVehicle _x;
-  } forEach attachedObjects _targetObj;
-
   //bb = bounding box calculation based on source/creator: http://killzonekid.com/arma-3-bounding-box-utility/
   _bb = {
       _bbx = [_this select 0 select 0, _this select 1 select 0];

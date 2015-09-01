@@ -42,16 +42,14 @@ try {
   _setupVector =  {
     _turnObj = _this select 0;
     _dir = _this select 1;
-    _angel_corr = _this select 2;
+    _angle_corr = _this select 2;
 
     _heightDiff =  (getPosASl _turnObj select 2)-((_turnObj modelToWorld [0,0,0]) select 2);
     _dist = _turnObj distance2D player;
 
     _angle = (_heightDiff atan2 _dist);
-    _angle = (_angel_corr + _angle) *-1;
+    _angle = (_angle_corr + _angle) *-1;
 
-    //_dir = 180;
-    //_angle = -90;
     _pitch = 0;
 
     _vecdx = sin(_dir) * cos(_angle);
@@ -63,6 +61,7 @@ try {
     _vecuz = cos(_angle) * cos(_pitch);
 
     _turnObj setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
+
   };
 
   //right down object
@@ -91,9 +90,6 @@ try {
   _obj_td allowDamage false;
 
   [_obj_td, 180, 90] call _setupVector;
-
-  testObj = _obj_td; //for debug  //TODO clear
-
 
   //side view upper right corner
   //_x = (_spaceBetweenObjects + _maxWidth);
