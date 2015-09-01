@@ -18,8 +18,6 @@ configProperties [configFile >> "CfgVehicles" >> "O_Truck_02_box_F"];
 
 //turn off environment
 enableEnvironment false;
-
-_debugTextExit = true;
 _scr = false;
 
 //scope == 0 private, 1 internal/protected, 2 public
@@ -50,7 +48,7 @@ _cfgAll = "(
 
 
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles, [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldLength,_worldWidth,_worldHeight], _bbox],_scrshot_file","exp_def"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles, [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight], _bbox],_scrshot_file","exp_def"] call ADL_DEBUG;
 
 for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 {
@@ -180,7 +178,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
         [str(_exception)] call ADL_DEBUG;
     };
   };
-  if  (_debugTextExit && _i > 15) exitWith { true; };
+  if  (DEBUG_EXIT && _i > DEBUG_COUNT) exitWith { true; };
 };
 ["done"] call ADL_DEBUG;
 hint ("done with " + str(count(_cfg)));

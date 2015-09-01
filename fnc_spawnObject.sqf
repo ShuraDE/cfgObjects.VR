@@ -54,7 +54,7 @@ _worldWidth =  abs((_obj modelToWorld [((_bbox select 1) select 0) * 2,0,0]) sel
 //_worldHeight = abs((_obj modelToWorld [0,0,(((_bbox select 1) select 2) max ((_bbox select 0) select 2)) * 2]) select 2) - _zOffSet;
 _worldHeight = abs(((_obj modelToWorld [0,0,((_bbox select 1) select 2)]) select 2) - ((_obj modelToWorld [0,0,((_bbox select 0) select 2)]) select 2));
 //_worldHeight = (getPosASL _obj select 2) - _zOffSet;
-_sizes = [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldLength,_worldWidth,_worldHeight], _bbox];
+_sizes = [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight], _bbox];
 
 //set player view
 [_obj, _sizes, _zOffSet, _spaceBetweenObjects] call ADL_PL_POS;

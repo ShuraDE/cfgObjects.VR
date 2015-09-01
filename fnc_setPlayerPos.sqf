@@ -32,7 +32,8 @@ z = 2 times height
 player setPosASL [
   (_objMiddle select 0),
   ((_objMiddle select 1)-(2*_radius)-((_worldHeight max _worldWidth))) min -3,
-  _zOffSet + (_worldHeight max _worldWidth) +_eyeOffset
+  (_zOffSet + (_worldHeight max _worldWidth) +_eyeOffset) max 4
   //((_worldSizes select 2) max (_worldSizes select 1)) + (_worldSizes select 2) + _zOffSet +_eyeOffset
 ];
+[_worldHeight max _worldWidth] call ADL_DEBUG;
 //[format["%1 height, %2 width, %3 length, %4 radius", _worldSizes select 2,_worldSizes select 0,_worldSizes select 1,_radius]] call ADL_DEBUG;
