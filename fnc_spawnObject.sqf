@@ -39,24 +39,17 @@ _sizes = [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldLength,
 [_obj, _sizes, _zOffSet, _spaceBetweenObjects] call ADL_PL_POS;
 
 try {
-
   _setupVector =  {
-
     _turnObj = _this select 0;
     _dir = _this select 1;
     _angel_corr = _this select 2;
 
-    _heightDiff = ((_turnObj modelToWorld [0,0,0]) select 2) - (getPosASl player select 2);
+    _heightDiff =  (getPosASl _turnObj select 2)-((_turnObj modelToWorld [0,0,0]) select 2);
     _dist = _turnObj distance2D player;
 
-    _angle = _heightDiff atan2 _dist;
+    _angle = (_heightDiff atan2 _dist);
     _angle = (_angel_corr + _angle) *-1;
 
-    [_angle] call ADL_DEBUG;
-    [_angel_corr] call ADL_DEBUG;
-    [_dist] call ADL_DEBUG;
-
-    //_angle = -100;
     //_dir = 180;
     //_angle = -90;
     _pitch = 0;
@@ -97,7 +90,7 @@ try {
   _obj_td enableSimulation false;
   _obj_td allowDamage false;
 
-  [_obj_td, 180, 95] call _setupVector;
+  [_obj_td, 180, 90] call _setupVector;
 
   testObj = _obj_td; //for debug  //TODO clear
 
@@ -111,7 +104,7 @@ try {
   //correct orientation from player view
   _angle_s = ((( getPosASL _obj_s) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_s) select 0) - (( getPosASL player) select 0));
   _obj_s setDir (180 - _angle_s);
-
+  //[_obj_s, (180 - _angle_s), 90] call _setupVector;
 
   //rear view upper left corner
   //_x = (_spaceBetweenObjects + _maxWidth) * -1;
@@ -122,6 +115,7 @@ try {
   //correct orientation from player view
   _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
   _obj_r setDir (90 - _angle_r);
+  //[_obj_r, (90 - _angle_r), 90] call _setupVector;
 
 
   //draw chart

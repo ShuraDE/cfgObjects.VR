@@ -78,12 +78,12 @@ _createChart = {
     _lineColr = "";
 
     if (_idx == 0) then {
-      _colr = [0,'#(argb,8,8,3)color(0,0,0,1)']; //black
-      _lineColr = [0,0,0,1];
+      _colr = [0,'#(argb,8,8,3)color(1,1,1,1)']; //white
+      _lineColr = [1,1,1,1];
     } else {
       if (_idx mod 5 == 0) then {
-        _colr = [0,'#(argb,8,8,3)color(1,1,1,1)']; //white
-        _lineColr = [1,1,1,1];
+        _colr = [0,'#(argb,8,8,3)color(0,0,0,1)']; //black
+        _lineColr = [0,0,0,1];
       } else {
         _colr = [0,'#(argb,8,8,3)color(0.8,0.6,0,1)']; //yellow
         _lineColr = [0.8,0.6,0,1];
@@ -113,47 +113,52 @@ _createChart = {
     _loc = [];
 
     _fnc_handle_X = {
+
+      _loc pushBack [0, (_rp2 select 1), (_rp2 select 2)];
+      _loc pushBack [0, (_rp1 select 1), (_rp1 select 2)];
       for [{_i = 0}, {_i <= floor(_rp2 select 0)}, {_i=_i+1}] do {
         //up & down
         _loc pushBack [_i, (_rp2 select 1), (_rp2 select 2)];
-        _loc pushBack [_i, (_rp2 select 1), (_rp1 select 2)];
+        _loc pushBack [_i, (_rp1 select 1), (_rp1 select 2)];
         //negative up & down
-        if (_i > 0) then {
-          _loc pushBack [_i * -1, (_rp2 select 1), (_rp2 select 2)];
-          _loc pushBack [_i * -1, (_rp2 select 1), (_rp1 select 2)];
-        };
+        _loc pushBack [_i * -1, (_rp2 select 1), (_rp2 select 2)];
+        _loc pushBack [_i * -1, (_rp1 select 1), (_rp1 select 2)];
+
         [_target, _loc, _i] call _pointLayout;
         _loc =[];
       };
     }; //end _fnc_handle_X
     /////////////////////////////////////////////////////////////////////////
     _fnc_handle_Y = {
+
+      _loc pushBack [(_rp2 select 0), 0, (_rp2 select 2)];
+      _loc pushBack [(_rp1 select 0), 0, (_rp1 select 2)];
       for [{_i = 0}, {_i <= floor(_rp2 select 1)}, {_i=_i+1}] do {
 
         //front & back
         _loc pushBack [(_rp2 select 0), _i, (_rp2 select 2)];
-        _loc pushBack [(_rp1 select 0), _i, (_rp2 select 2)];
+        _loc pushBack [(_rp1 select 0), _i, (_rp1 select 2)];
         //negative front & back
-        if (_i > 0) then {
         _loc pushBack [(_rp2 select 0), _i * -1, (_rp2 select 2)];
-        _loc pushBack [(_rp1 select 0), _i * -1, (_rp2 select 2)];
-        };
+        _loc pushBack [(_rp1 select 0), _i * -1, (_rp1 select 2)];
+
         [_target, _loc, _i] call _pointLayout;
         _loc =[];
       };
     }; //end _fnc_handle_Y
     /////////////////////////////////////////////////////////////////////////
     _fnc_handle_Z = {
-      for [{_i = 0}, {_i <= floor(_rp2 select 2)}, {_i=_i+1}] do {
 
+      _loc pushBack [(_rp2 select 0), (_rp2 select 1), 0];
+      _loc pushBack [(_rp1 select 0), (_rp1 select 1), 0];
+      for [{_i = 1}, {_i <= floor(_rp2 select 2)}, {_i=_i+1}] do {
         //right & left
         _loc pushBack [(_rp2 select 0), (_rp2 select 1), _i];
-        _loc pushBack [(_rp1 select 0), (_rp2 select 1), _i];
+        _loc pushBack [(_rp1 select 0), (_rp1 select 1), _i];
         //negative right & left
-        if (_i > 0) then {
         _loc pushBack [(_rp2 select 0), (_rp2 select 1), _i*-1];
-        _loc pushBack [(_rp1 select 0), (_rp2 select 1), _i*-1];
-        };
+        _loc pushBack [(_rp1 select 0), (_rp1 select 1), _i*-1];
+
         [_target, _loc, _i] call _pointLayout;
         _loc =[];
       };
