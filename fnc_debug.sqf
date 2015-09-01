@@ -1,4 +1,4 @@
-private ["_msg"];
+private ["_msg","_typ"];
 
 //variable checks
 if (isNil "DEBUG_OUTPUT") then { DEBUG_OUTPUT = false; };
@@ -10,7 +10,8 @@ if (isNil "DEBUG_TYPE_LOG") then { DEBUG_TYPE_LOG = true; };
 if (DEBUG_OUTPUT) then { exit; };
 
 _msg = _this select 0;
+_typ =  param [1, "debug"];
 
-if (DEBUG_TYPE_HINT) then {hintSilent format ["debug: %1", _msg];};
-if (DEBUG_TYPE_CHAT) then {systemChat format ["debug: %1", _msg];};
-if (DEBUG_TYPE_LOG) then {diag_log format ["debug: %1", _msg]};
+if (DEBUG_TYPE_HINT) then {hintSilent format ["%1: %2", _typ, _msg];};
+if (DEBUG_TYPE_CHAT) then {systemChat format ["%1: %2", _typ, _msg];};
+if (DEBUG_TYPE_LOG) then {diag_log format ["%1: %2", _typ, _msg]};

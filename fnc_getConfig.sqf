@@ -44,7 +44,7 @@ _cfgAll = "(
 
 
 ["Export Data:"] call ADL_DEBUG;
-["[_class,_genMac,_type,_description,[_roles],[_weapons],[_magazines],_type2,[_filter],_side,_model,_parent,_vehicleClass,_ttl,[_cargoCoDriver],_transportSoldier,_transportVehicle,_transportAmmo,_transportFuel,_transportRepair,_maximumLoad,_transportMaxMagazines,_transportMaxWeapons,_transportMaxBackpacks,_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,[_hiddenSel],[_x,_y,_z, [_bb]],_scrshot_file"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,vehicleClass,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],[_x,_y,_z, [_bb]],_scrshot_file"] call ADL_DEBUG;
 
 [format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
 
@@ -90,9 +90,9 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _maxSpeed = getNumber((_cfg select _i) >> "maxSpeed");
   _minSpeed = getNumber((_cfg select _i) >> "minSpeed");
   _hiddenSel = getArray((_cfg select _i) >> "hiddenSelections");
+  _hiddelSelTex = getArray((_cfg select _i) >> "hiddenSelectionsTextures");
 
-  _dataVehicle = [_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,_hiddenSel];
-
+  _dataVehicle = [_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,_hiddenSel,_hiddelSelTex];
 
 
   /*
@@ -102,21 +102,12 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   */
 
 
-
   if (_class != "" && _type != "" && _description != "") then {
     try {
+      _veh = [_class] call ADL_SPAWN_OBJ;
 
-      dummy call FNC_SHOW_BOUNDINGBOX;
-
-      hint _class;
       _scrFile = "";
-      _veh = createVehicle [_class, [0,0,0.2], [], 0, "NONE"];
-      _veh enableSimulation false;
-      _veh allowDamage false;
-      _veh setDir 180;
-      _vehTD = nil;
 
-      if (_debugTextExit) then { testObj = _veh; };
 
       if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {
 
@@ -126,21 +117,9 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
            _maxLength = abs ((_bbox select 1 select 1) - (_bbox select 0 select 1));
            _maxHeight = abs ((_bbox select 1 select 2) - (_bbox select 0 select 2));
            _sizes = [_maxWidth,_maxLength,_maxHeight];
-           [[[_veh,1]]] call ADL_DRAW_CHART;
-           [_veh] call ADL_PL_POS;
 
+           //[[[_veh,1]]] call ADL_DRAW_CHART;
 
-/*
-           //create 2nd one with different dir & up if enabled
-           if (ENABLE_2ND_VEH_TD) then {
-             _vehTD = createVehicle [_class, [-20, 20, _viewZ / 2], [], 0, "NONE"];
-             _vehTD allowDamage false;
-             _vehTD enableSimulation false;
-             _vehTD setDir 180;
-             _vehTD setVectorUp [-(vectorUp _vehTD select 2), -(vectorUp _vehTD select 0), -(vectorUp _vehTD select 0)]
-
-           };
-*/
            //take screen shoot if enabled
            if (ENABLE_SCREEN) then {
              sleep 0.5;
@@ -148,22 +127,12 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
              _scr = true;
            };
 
-           ["data: " + str(_i) + str(_dataBase+_dataTransport+_dataVehicle+_sizes+[_scrFile])]  call ADL_DEBUG;
+           [str(_i) + str(_dataBase+_dataTransport+_dataVehicle+[_sizes]+[_scrFile]), "adl_data"]  call ADL_DEBUG;
 
-
-
-/*
-           if (ENABLE_2ND_VEH_TD) then {
-             {
-                 deleteVehicle _x;
-             } forEach attachedObjects _veh;
-             deleteVehicle _vehTD;
-           };
-*/
          }
          catch {
-           ["data: " + str(_i) + str(_dataBase+_dataTransport+_dataVehicle)]  call ADL_DEBUG;
-           ["ERROR " + _class] call ADL_DEBUG;
+           [str(_i) + str(_dataBase+_dataTransport+_dataVehicle+[_sizes]), "adl_data"]  call ADL_DEBUG;
+           [_class, "adl_error"] call ADL_DEBUG;
          };
 
          //test exit
@@ -178,11 +147,11 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
       };
     }
     catch {
-        ["**** NO SCREEN ****"] call ADL_DEBUG;
+        ["**** NO SCREEN ****", "warn"] call ADL_DEBUG;
         [str(_exception)] call ADL_DEBUG;
     };
   };
-  if  (_debugTextExit) exitWith { true; };
+  if  (_debugTextExit && _i > 3) exitWith { true; };
 };
 ["done"] call ADL_DEBUG;
 hint ("done with " + str(count(_cfg)));
