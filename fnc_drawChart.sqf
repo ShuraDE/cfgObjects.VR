@@ -42,29 +42,32 @@ _createChart = {
       _arr pushBack (_arr select 1);
       _arr
   }; //end _bb
+
+  /////////////////////////////////////////////////////////////////
   _bbox = boundingBox _targetObj call _bb;
   _bboxr = boundingBoxReal _targetObj call _bb;
 
   //add bbox lines to chart lines
   for "_i" from 0 to 7 step 2 do {
-      lines pushBack ([_bbox select _i] + [_bbox select (_i + 2)] + [[0,0,1,1]]);
+      //lines pushBack ([_bbox select _i] + [_bbox select (_i + 2)] + [[0,0,1,1]]);
       lines pushBack ([_bboxr select _i] + [_bboxr select (_i + 2)] + [[0,1,0,1]]);
-      lines pushBack ([_bbox select (_i + 2)] + [_bbox select (_i + 3)] + [[0,0,1,1]]);
+      //lines pushBack ([_bbox select (_i + 2)] + [_bbox select (_i + 3)] + [[0,0,1,1]]);
       lines pushBack ([_bboxr select (_i + 2)] + [_bboxr select (_i + 3)] + [[0,1,0,1]]);
-      lines pushBack ([_bbox select (_i + 3)] + [_bbox select (_i + 1)] + [[0,0,1,1]]);
+      //lines pushBack ([_bbox select (_i + 3)] + [_bbox select (_i + 1)] + [[0,0,1,1]]);
       lines pushBack ([_bboxr select (_i + 3)] + [_bboxr select (_i + 1)] + [[0,1,0,1]]);
   };
 
   _bbr = boundingBoxReal _targetObj;
   _bb = boundingBox _targetObj;
   _bbox = if (isNil("_bbr")) then { _bb;} else {_bbr;};
-  
+
   _p1 = _bbox select 0;
   _p2 = _bbox select 1;
 
   //check if object large enough to show chart
   _bShowChart = ((_p2 select 0) > _minSize || (_p2 select 1) > _minSize || (_p2 select 2) > _minSize);
-  hint format["%1\%2",_bShowChart,str(_p2)];
+
+  ///////////////////////////////////////////////////////
   //set spherenodes with color
   _pointLayout = {
     _target = _this select 0;
@@ -100,6 +103,8 @@ _createChart = {
 
   }; //end _pointLayout
 
+  /////////////////////////////////////////////////////////////////////////
+  //get each node position on bb
   _handlePoints = {
     _target = _this select 0;
     _rp1 = _this select 1; //down left
@@ -120,8 +125,8 @@ _createChart = {
         [_target, _loc, _i] call _pointLayout;
         _loc =[];
       };
-    };
-
+    }; //end _fnc_handle_X
+    /////////////////////////////////////////////////////////////////////////
     _fnc_handle_Y = {
       for [{_i = 0}, {_i <= floor(_rp2 select 1)}, {_i=_i+1}] do {
 
@@ -136,8 +141,8 @@ _createChart = {
         [_target, _loc, _i] call _pointLayout;
         _loc =[];
       };
-    };
-
+    }; //end _fnc_handle_Y
+    /////////////////////////////////////////////////////////////////////////
     _fnc_handle_Z = {
       for [{_i = 0}, {_i <= floor(_rp2 select 2)}, {_i=_i+1}] do {
 
@@ -152,79 +157,44 @@ _createChart = {
         [_target, _loc, _i] call _pointLayout;
         _loc =[];
       };
-    };
+    }; //end _fnc_handle_Z
 
     switch true do {
+        case (_dSide in [4,5]): { //top/down
+          [] call _fnc_handle_X;
+          [] call _fnc_handle_Y;
+        };
+        case (_dSide in [2,3]): { //sides
+          [] call _fnc_handle_Z;
+          [] call _fnc_handle_Y;
+        };
         case (_dSide in [1,6]): { //front, back
           [] call _fnc_handle_X;
           [] call _fnc_handle_Z;
         };
-        case (_dSide in [4,5]): {
-          [] call _fnc_handle_X;
-          [] call _fnc_handle_Y;
-        };
-        case (_dSide in [2,3]): {
-          [] call _fnc_handle_Z;
-          [] call _fnc_handle_Y;
-        };
     };
-
-    /*
-    switch (_dSide) do {
-      case (1): {
-        //X
-        for [{_i = 0}, {_i <= floor(_rp2 select 0)}, {_i=_i+1}] do {
-          //up & down
-          _loc pushBack [_i, (_rp2 select 1), (_rp2 select 2)];
-          _loc pushBack [_i, (_rp2 select 1), (_rp1 select 2)];
-          //negative up & down
-          if (_i > 0) then {
-            _loc pushBack [_i * -1, (_rp2 select 1), (_rp2 select 2)];
-            _loc pushBack [_i * -1, (_rp2 select 1), (_rp1 select 2)];
-          };
-          [_target, _loc, _i] call _pointLayout;
-          _loc =[];
-        };
-        //Z
-        for [{_i = 0}, {_i <= floor(_rp2 select 2)}, {_i=_i+1}] do {
-
-          //right & left
-          _loc pushBack [(_rp2 select 0), (_rp2 select 1), _i];
-          _loc pushBack [(_rp1 select 0), (_rp2 select 1), _i];
-          //negative right & left
-          if (_i > 0) then {
-          _loc pushBack [(_rp2 select 0), (_rp2 select 1), _i*-1];
-          _loc pushBack [(_rp1 select 0), (_rp2 select 1), _i*-1];
-          };
-          [_target, _loc, _i] call _pointLayout;
-          _loc =[];
-        };
-
-      };
-    };
-    */
   }; //end _handlePoints
-
+  ////////////////////////////////////////////////////////////
   if (_bShowChart) then {
     //_side values : 1 = back, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = front
     switch (_side) do {
       case (1): { //back
-        [_targetObj, [_p1 select 0, _p2 select 1, _p1 select 2], _p2, 1] call _handlePoints;
+        [_targetObj, [_p1 select 0, _p2 select 1, _p1 select 2], _p2, _side] call _handlePoints;
       };
       case (2): {  //left
-        [_targetObj, _p1, [_p1 select 0, _p2 select 1, _p2 select 2], 1] call _handlePoints;
+        [_targetObj, _p1, [_p1 select 0, _p2 select 1, _p2 select 2], _side] call _handlePoints;
       };
       case (3): { //right
-        [_targetObj, [_p2 select 0, _p1 select 1, _p1 select 2], _p2, 1] call _handlePoints;
+        [_targetObj, [_p2 select 0, _p1 select 1, _p1 select 2], _p2, _side] call _handlePoints;
       };
       case (4): { //buttom
-        [_targetObj, _p1, [_p2 select 0, _p2 select 1, _p1 select 2], 1] call _handlePoints;
+        [_targetObj, _p1, [_p2 select 0, _p2 select 1, _p1 select 2], _side] call _handlePoints;
       };
       case (5): { //top
-        [_targetObj, [_p1 select 0, _p1 select 1, _p2 select 2], _p2, 1] call _handlePoints;
+        [_targetObj, [_p1 select 0, _p1 select 1, _p2 select 2], _p2, _side] call _handlePoints;
       };
       case (6): { //front
-        [_targetObj, _p1, [_p2 select 0, _p1 select 1, _p2 select 2], 1] call _handlePoints;
+        [_targetObj, _p1, [_p2 select 0, _p1 select 1, _p2 select 2], _side] call _handlePoints;
       };
     };
   };
