@@ -8,8 +8,8 @@ _zOffSet = 0.2;
 // dir 180 center down
 // dir 135 right down
 // dir 225 left down
-// dir 0 center behind
-// dir 270  left top, top down
+// pitch up (top down view) center top
+// dir 0  left top, rear view
 // dir 90  right top, side view
 
 
@@ -35,7 +35,6 @@ _sizes = [[_maxWidth,_maxLength,_maxHeight],_radius,[_worldLength,_worldWidth,_w
 
 
 try {
-
   //right down object
   //distance between middlepoint to corner + space between + half width
   _x = _radius + _spaceBetweenObjects + (_maxWidth/2);
@@ -53,28 +52,17 @@ try {
   _obj_ld allowDamage false;
   _obj_ld setDir 225;
 
-  //dir 0 center behind
-  _y = (_worldLength*2) + _spaceBetweenObjects + _worldHeight;
-  _pos = [ 0, _y, _zOffSet];
-  _obj_cb = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
-  _obj_cb enableSimulation false;
-  _obj_cb allowDamage false;
-  _obj_cb setDir 0;
-
-
-  //topdown view in upper left corner
-  _x = (_spaceBetweenObjects + _maxWidth) *-1;
-  _z = _zOffSet + _worldHeight;
-  _obj_td = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+  //topdown view upper center
+  _z = _zOffSet + (_worldHeight max _worldLength);
+  _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
   _obj_td enableSimulation false;
   _obj_td allowDamage false;
 
-
   _setupVector =  {
 
-    _dir = 90;
-    _angle = 0;
-    _pitch = -90;
+    _dir = 180;
+    _angle = -90;
+    _pitch = 0;
 
     _vecdx = sin(_dir) * cos(_angle);
     _vecdy = cos(_dir) * cos(_angle);
@@ -86,33 +74,30 @@ try {
 
     _obj_td setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
   };
-  //correct orientation from player view
-  _angle_td = ((( getPosASL _obj_td) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_td) select 0) - (( getPosASL player) select 0));
-
-  //[] call _setupVector;
-
-
-  _obj_td setVectorUp [1, cos (_angle_td),0];
-  _obj_td setVectorDir [1, 0, 0];
+  [] call _setupVector;
 
   testObj = _obj_td;
 
-
-  /*
-  _obj_td setVectorDirAndUp [[1,0,0],[0,-1,0]];
-  sleep 0.2;
-*/
   //side view upper right corner
   _x = (_spaceBetweenObjects + _maxWidth);
-  _z = _zOffSet + _worldHeight;
+  _z = _zOffSet + (_worldHeight max _worldLength);
   _obj_s = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
   _obj_s enableSimulation false;
   _obj_s allowDamage false;
   //correct orientation from player view
   _angle_s = ((( getPosASL _obj_s) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_s) select 0) - (( getPosASL player) select 0));
-
-  //_obj_s setDir 270;
   _obj_s setDir (180 - _angle_s);
+
+
+  //rear view upper left corner
+  _x = (_spaceBetweenObjects + _maxWidth) * -1;
+  _z = _zOffSet + (_worldHeight max _worldLength);
+  _obj_r = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+  _obj_r enableSimulation false;
+  _obj_r allowDamage false;
+  //correct orientation from player view
+  _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
+  _obj_r setDir (90 - _angle_r);
 
 }
 catch {
