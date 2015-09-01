@@ -75,8 +75,8 @@ try {
     _obj_td setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
   };
   [] call _setupVector;
+  testObj = _obj_td; //for debug  //TODO clear
 
-  testObj = _obj_td;
 
   //side view upper right corner
   _x = (_spaceBetweenObjects + _maxWidth);
@@ -99,6 +99,10 @@ try {
   _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
   _obj_r setDir (90 - _angle_r);
 
+
+  //draw chart
+  // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top
+  [[[_obj_td,4],[_obj_r,1],[_obj_s,2]]] execVM "fnc_drawChart.sqf";
 }
 catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;

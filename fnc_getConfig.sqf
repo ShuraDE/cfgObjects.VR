@@ -130,12 +130,11 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
   if (_class != "" && _type != "" && _description != "") then {
     try {
+
       _objSpawn = [_class] call ADL_SPAWN_OBJ;
 
       _veh = _objSpawn select 0;
       _sizes = _objSpawn select 1;
-
-      testObj = _veh; //for debug
 
       _scrFile = "";
 

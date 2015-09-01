@@ -1,5 +1,5 @@
 
-//input array [[obj1, side] , [obj2, side]]   side can be 1 or 2  (front / side)
+//input array [[obj1, side] , [obj2, side]]  //side values: 1 = back, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = front
 _targets = _this select 0;
 
 //clear up
@@ -13,10 +13,11 @@ _minSize = 1;
 _createChart = {
 
   _targetObj = _this select 0;
-  //values = 1 = front, 2 = side
-  _side = _this select 1;  //draw chart on rear side
+  //values = 1 = back, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = front
+  _side = _this select 1;
 
 
+  //cleanup if double called
   {
       deleteVehicle _x;
   } forEach attachedObjects _targetObj;
@@ -40,7 +41,7 @@ _createChart = {
       _arr pushBack (_arr select 0);
       _arr pushBack (_arr select 1);
       _arr
-  };
+  }; //end _bb
   _bbox = boundingBox _targetObj call _bb;
   _bboxr = boundingBoxReal _targetObj call _bb;
 
@@ -98,9 +99,9 @@ _createChart = {
       lines pushBack ([(_target modelToWorld (_loc select _i))] + [(_target modelToWorld (_loc select (_i+1)))] + [_lineColr]);
     };
 
-  };
+  }; //end _pointLayout
 
-  _rearPoints = {
+  _handlePoints = {
     _target = _this select 0;
     _rp1 = _this select 1; //down left
     _rp2 = _this select 2; //up right
@@ -139,19 +140,35 @@ _createChart = {
 
       };
     };
-  };
+  }; //end _handlePoints
 
   if (_bShowChart) then {
+    //_side values : 1 = back, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = front
     switch (_side) do {
-      case (1): { //front, draw back sided
-        [_targetObj, [_p1 select 0, _p2 select 1, _p1 select 2], _p2, 1] call _rearPoints;
+      case (1): { //back
+        [_targetObj, [_p1 select 0, _p2 select 1, _p1 select 2], _p2, 1] call _handlePoints;
+      };
+      case (2): {  //left
+        [_targetObj, _p1, [_p1 select 0, _p2 select 1, _p2 select 2], 1] call _handlePoints;
+      };
+      case (3): { //right
+        [_targetObj, [_p2 select 0, _p1 select 1, _p1 select 2], _p2, 1] call _handlePoints;
+      };
+      case (4): { //buttom
+        [_targetObj, _p1, [_p2 select 0, _p2 select 1, _p1 select 2], 1] call _handlePoints;
+      };
+      case (5): { //top
+        [_targetObj, [_p1 select 0, _p1 select 1, _p2 select 2], _p2, 1] call _handlePoints;
+      };
+      case (6): { //front
+        [_targetObj, _p1, [_p2 select 0, _p1 select 1, _p2 select 2], 1] call _handlePoints;
       };
     };
   };
-};
+}; //end _createChart
 
 
-[_targets] call ADL_DEBUG;
+//start here
 {
     [_x select 0, _x select 1]  call _createChart;
 } forEach _targets;

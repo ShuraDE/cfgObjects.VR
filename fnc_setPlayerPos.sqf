@@ -17,15 +17,19 @@ _objMiddle = _target modelToWorld [0,0,0];
 
 player setDir 0;
 
+
+//TODO check calc :
+//_target_TD  if length > height
+
 /*
 //set pos
 x = middle of target
 y = in front of target from the middle 2 times radius + width
 z = 2 times height
 */
-
+//(_worldHeight max _worldLength)
 player setPosASL [
   (_objMiddle select 0),
   (_objMiddle select 1)-(2*_radius)-(_worldSizes select 0),
-  (_worldSizes select 2) * 2
+  ((_worldSizes select 2) max (_worldSizes select 1)) * 2
 ];
