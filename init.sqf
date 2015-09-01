@@ -4,6 +4,7 @@ ADL_DRAW_CHART = compile preprocessFileLineNumbers "fnc_drawChart.sqf";
 ADL_PL_POS = compile preprocessFileLineNumbers "fnc_setPlayerPos.sqf";
 FNC_SCR_CAP = compile preprocessFileLineNumbers "fnc_makeScreen.sqf";
 FNC_SHOW_BOUNDINGBOX = compile preprocessFileLineNumbers "fnc_showBoundingBox.sqf";
+FNC_ROTATE = compile preprocessFileLineNumbers "fnc_rotate.sqf";
 
 ADL_CLEAN_UP = compile preprocessFileLineNumbers "fnc_cleanUp.sqf";
 ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";

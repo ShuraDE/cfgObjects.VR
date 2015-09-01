@@ -131,8 +131,13 @@ try {
   _obj_r allowDamage false;
   //correct orientation from player view
   _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
+
+
   _obj_r setDir (90 - _angle_r);
-  //[_obj_r, (90 - _angle_r), 90] call _setupVector;
+  //[_obj_r,0,0,0] call FNC_ROTATE;
+  //[_obj,[-10,0,0]] call fnc_SetPitchBankYaw;
+
+  ////[_obj_r, (90 - _angle_r), 90] call _setupVector;
 
 
   //draw chart
