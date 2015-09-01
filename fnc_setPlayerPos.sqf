@@ -22,9 +22,6 @@ _objMiddle = _target modelToWorld [0,0,0];
 player setDir 0;
 
 
-//TODO check calc :
-//_target_TD  if length > height
-
 /*
 //set pos
 x = middle of target
@@ -34,8 +31,8 @@ z = 2 times height
 //(_worldHeight max _worldLength)
 player setPosASL [
   (_objMiddle select 0),
-  ((_objMiddle select 1)-(2*_radius)-((_worldHeight max _worldWidth))) min -5,
+  ((_objMiddle select 1)-(2*_radius)-((_worldHeight max _worldWidth))) min -2,
   _zOffSet + (_worldHeight max _worldWidth) +_eyeOffset
   //((_worldSizes select 2) max (_worldSizes select 1)) + (_worldSizes select 2) + _zOffSet +_eyeOffset
 ];
-[format["%1 height, %2 width, %3 length, %4 radius", _worldSizes select 2,_worldSizes select 0,_worldSizes select 1,_radius]] call ADL_DEBUG;
+//[format["%1 height, %2 width, %3 length, %4 radius", _worldSizes select 2,_worldSizes select 0,_worldSizes select 1,_radius]] call ADL_DEBUG;

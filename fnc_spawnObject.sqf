@@ -18,7 +18,28 @@ _obj = createVehicle [_objClass, [0,0.1,_zOffSet], [], 0, "CAN_COLLIDE"];
 _obj enableSimulation false;
 _obj allowDamage false;
 _obj setDir 180; //warning: boundingbox points -> modelToWorld calc is reversed with  reason model is turn around !!  -.-
+
 hint _objClass;
+
+hint parseText format ["
+  <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%1</t><br/>
+  <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%2</t><br/>
+  <t align='center' color='#666666'>------------------------------</t><br/><br/>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'><img size='4' image='%3'/></t><br/>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'><img size='4' image='%4'/></t><br/>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%5</t><br/>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%6</t><br/>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t>
+  ",
+     _objClass,
+     getText(configFile >> "CfgVehicles" >> _objClass >> "displayName"),
+     getText(configFile >> "CfgVehicles" >> _objClass >> "picture"),
+     getText(configFile >> "CfgVehicles" >> _objClass >> "icon"),
+     getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass"),
+     getText(configFile >> "CfgVehicles" >> _objClass >> "faction"),
+     getText(configFile >> "CfgVehicles" >> _objClass >> "author")];
+
+
 [_objClass] call ADL_DEBUG;
 
 //get sizes for calculation
