@@ -57,9 +57,8 @@ _createChart = {
 
   _bbr = boundingBoxReal _targetObj;
   _bb = boundingBox _targetObj;
-
   _bbox = if (isNil("_bbr")) then { _bb;} else {_bbr;};
-
+  
   _p1 = _bbox select 0;
   _p2 = _bbox select 1;
 
@@ -108,6 +107,69 @@ _createChart = {
     _dSide = _this select 3; // x / y
     _loc = [];
 
+    _fnc_handle_X = {
+      for [{_i = 0}, {_i <= floor(_rp2 select 0)}, {_i=_i+1}] do {
+        //up & down
+        _loc pushBack [_i, (_rp2 select 1), (_rp2 select 2)];
+        _loc pushBack [_i, (_rp2 select 1), (_rp1 select 2)];
+        //negative up & down
+        if (_i > 0) then {
+          _loc pushBack [_i * -1, (_rp2 select 1), (_rp2 select 2)];
+          _loc pushBack [_i * -1, (_rp2 select 1), (_rp1 select 2)];
+        };
+        [_target, _loc, _i] call _pointLayout;
+        _loc =[];
+      };
+    };
+
+    _fnc_handle_Y = {
+      for [{_i = 0}, {_i <= floor(_rp2 select 1)}, {_i=_i+1}] do {
+
+        //front & back
+        _loc pushBack [(_rp2 select 0), _i, (_rp2 select 2)];
+        _loc pushBack [(_rp1 select 0), _i, (_rp2 select 2)];
+        //negative front & back
+        if (_i > 0) then {
+        _loc pushBack [(_rp2 select 0), _i * -1, (_rp2 select 2)];
+        _loc pushBack [(_rp1 select 0), _i * -1, (_rp2 select 2)];
+        };
+        [_target, _loc, _i] call _pointLayout;
+        _loc =[];
+      };
+    };
+
+    _fnc_handle_Z = {
+      for [{_i = 0}, {_i <= floor(_rp2 select 2)}, {_i=_i+1}] do {
+
+        //right & left
+        _loc pushBack [(_rp2 select 0), (_rp2 select 1), _i];
+        _loc pushBack [(_rp1 select 0), (_rp2 select 1), _i];
+        //negative right & left
+        if (_i > 0) then {
+        _loc pushBack [(_rp2 select 0), (_rp2 select 1), _i*-1];
+        _loc pushBack [(_rp1 select 0), (_rp2 select 1), _i*-1];
+        };
+        [_target, _loc, _i] call _pointLayout;
+        _loc =[];
+      };
+    };
+
+    switch true do {
+        case (_dSide in [1,6]): { //front, back
+          [] call _fnc_handle_X;
+          [] call _fnc_handle_Z;
+        };
+        case (_dSide in [4,5]): {
+          [] call _fnc_handle_X;
+          [] call _fnc_handle_Y;
+        };
+        case (_dSide in [2,3]): {
+          [] call _fnc_handle_Z;
+          [] call _fnc_handle_Y;
+        };
+    };
+
+    /*
     switch (_dSide) do {
       case (1): {
         //X
@@ -140,6 +202,7 @@ _createChart = {
 
       };
     };
+    */
   }; //end _handlePoints
 
   if (_bShowChart) then {
