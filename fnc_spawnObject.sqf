@@ -66,20 +66,27 @@ try {
   _veh_td enableSimulation false;
   _veh_td allowDamage false;
 
-  _dir = 90;
-  _angle = 0;
-  _pitch = -90;
 
-  _vecdx = sin(_dir) * cos(_angle);
-  _vecdy = cos(_dir) * cos(_angle);
-  _vecdz = sin(_angle);
+  _setupVector =  {
 
-  _vecux = cos(_dir) * cos(_angle) * sin(_pitch);
-  _vecuy = sin(_dir) * cos(_angle) * sin(_pitch);
-  _vecuz = cos(_angle) * cos(_pitch);
+    _dir = 90;
+    _angle = 0;
+    _pitch = -90;
 
-  _veh_td setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
-/*
+    _vecdx = sin(_dir) * cos(_angle);
+    _vecdy = cos(_dir) * cos(_angle);
+    _vecdz = sin(_angle);
+
+    _vecux = cos(_dir) * cos(_angle) * sin(_pitch);
+    _vecuy = sin(_dir) * cos(_angle) * sin(_pitch);
+    _vecuz = cos(_angle) * cos(_pitch);
+
+    _veh_td setVectorDirAndUp [ [_vecdx,_vecdy,_vecdz], [_vecux,_vecuy,_vecuz] ];
+  };
+
+  [] call _setupVector;
+
+  /*
   _veh_td setVectorDirAndUp [[1,0,0],[0,-1,0]];
   sleep 0.2;
 */
@@ -91,7 +98,9 @@ try {
   _veh_s allowDamage false;
   _veh_s setDir 270;
 
-
+  //setup again, didnt do it first time :-/
+  sleep 1;
+  [] call _setupVector;
 }
 catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;

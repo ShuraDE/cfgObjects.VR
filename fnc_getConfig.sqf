@@ -42,9 +42,9 @@ _cfgAll = "(
   (getNumber (_x >> 'scope') >= 2)
 )" configClasses (configFile >> "CfgVehicles");
 
-
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,vehicleClass,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],[_x,_y,_z, [_bb]],_scrshot_file"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,vehicleClass,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles,[_x,_y,_z,_radius,_worldLength,_worldWidth,_worldHeight],_scrshot_file"] call ADL_DEBUG;
+
 
 [format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
 
@@ -95,6 +95,32 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _dataVehicle = [_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,_hiddenSel,_hiddelSelTex];
 
 
+  // for vehicles general
+  _armorStructural =  getNumber((_cfg select _i) >> "armorStructural"); //= 1;	// ranges between 1 and 4.0, default 1
+  _armorFuel =  getNumber((_cfg select _i) >> "armorFuel"); // = 1.4;	// default
+  _armorGlass =  getNumber((_cfg select _i) >> "armorGlass"); // = 0.5;	// default
+  _armorLights =  getNumber((_cfg select _i) >> "armorLights"); // = 0.4;	// default 0.4 in all models.
+  _armorWheels =  getNumber((_cfg select _i) >> "armorWheels"); // = 0.05;	// default
+  // for tanks
+  _armorHull =  getNumber((_cfg select _i) >> "armorHull"); // = 1;
+  _armorTurret =  getNumber((_cfg select _i) >> "armorTurret"); // = 0.8;
+  _armorGun =  getNumber((_cfg select _i) >> "armorGun"); // = 0.6;
+  _armorEngine =  getNumber((_cfg select _i) >> "armorEngine"); // = 0.8;
+  _armorTracks =  getNumber((_cfg select _i) >> "armorTracks"); // = 0.6;
+  // for men
+  _armorHead =  getNumber((_cfg select _i) >> "armorHead"); // = 0.7;
+  _armorHands =  getNumber((_cfg select _i) >> "armorHands"); // = 0.5;
+  _armorLegs =  getNumber((_cfg select _i) >> "armorLegs"); // = 0.5;
+  // additional to helicopters
+  _armorEngine =  getNumber((_cfg select _i) >> "armorEngine"); // = 0.6;
+  _armorAvionics =  getNumber((_cfg select _i) >> "armorAvionics"); // = 1.4;
+  _armorVRotor =  getNumber((_cfg select _i) >> "armorVRotor"); // = 0.5;
+  _armorHRotor =  getNumber((_cfg select _i) >> "armorHRotor"); // = 0.7;
+  _armorMissiles =  getNumber((_cfg select _i) >> "armorMissiles"); // = 1.6;
+
+  _dataArmor = [_armorStructural,_armorFuel,_armorGlass,_armorLights,_armorWheels,_armorHull,_armorTurret,_armorGun,_armorEngine,_armorTracks,_armorHead,_armorHands,_armorLegs,_armorEngine,_armorAvionics,_armorVRotor,_armorHRotor,_armorMissiles];
+
+
   /*
   ["data base: " + str(_dataBase)] call ADL_DEBUG;
   ["data trans: " + str(_dataTransport)] call ADL_DEBUG;
@@ -105,7 +131,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   if (_class != "" && _type != "" && _description != "") then {
     try {
       _veh = [_class] call ADL_SPAWN_OBJ;
-
       _scrFile = "";
 
 
@@ -116,7 +141,14 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
            _maxWidth = abs ((_bbox select 1 select 0) - (_bbox select 0 select 0));
            _maxLength = abs ((_bbox select 1 select 1) - (_bbox select 0 select 1));
            _maxHeight = abs ((_bbox select 1 select 2) - (_bbox select 0 select 2));
-           _sizes = [_maxWidth,_maxLength,_maxHeight];
+
+
+           _radius = (_veh modelToWorld [0,0,0]) distance (_veh modelToWorld [((_bbox select 0 )select 0), ((_bbox select 1) select 1), 0]);
+           _worldLength = abs((_veh modelToWorld [0,((_bbox select 1) select 1) * 2,0]) select 1) - (getPosASL _veh select 0);
+           _worldWidth =  abs((_veh modelToWorld [((_bbox select 1) select 0) * 2,0,0]) select 0) - (getPosASL _veh select 1);
+           _worldHeight = abs((_veh modelToWorld [0,0,((_bbox select 1) select 2) * 2]) select 2) - (getPosASL _veh select 2);
+
+           _sizes = [_maxWidth,_maxLength,_maxHeight,_radius,_worldLength,_worldWidth,_worldHeight];
 
            //[[[_veh,1]]] call ADL_DRAW_CHART;
 
@@ -127,11 +159,11 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
              _scr = true;
            };
 
-           [str(_i) + str(_dataBase+_dataTransport+_dataVehicle+[_sizes]+[_scrFile]), "adl_data"]  call ADL_DEBUG;
+           [str(_i) + str(_dataBase+_dataTransport+_dataVehicle+_dataArmor+[_sizes]+[_scrFile]), "adl_data"]  call ADL_DEBUG;
 
          }
          catch {
-           [str(_i) + str(_dataBase+_dataTransport+_dataVehicle+[_sizes]), "adl_data"]  call ADL_DEBUG;
+           [str(_i) + str(_dataBase+_dataTransport+_dataVehicle+_dataArmor+[_sizes]), "adl_data"]  call ADL_DEBUG;
            [_class, "adl_error"] call ADL_DEBUG;
          };
 
