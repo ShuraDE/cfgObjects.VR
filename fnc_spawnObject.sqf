@@ -103,7 +103,7 @@ try {
   _obj_ld setDir 225;
 
   //upper objects
-  _z = _zOffSet + (_worldHeight max _worldWidth); //for flip check height and length
+  _z = (_zOffSet + (_worldHeight max _worldWidth)) max 1; //for flip check height and length, min 1 up
 
   //topdown view upper center
   _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];

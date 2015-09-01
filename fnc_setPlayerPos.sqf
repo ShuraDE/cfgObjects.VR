@@ -31,7 +31,7 @@ z = 2 times height
 //(_worldHeight max _worldLength)
 player setPosASL [
   (_objMiddle select 0),
-  ((_objMiddle select 1)-(2*_radius)-((_worldHeight max _worldWidth))) min -2,
+  ((_objMiddle select 1)-(2*_radius)-((_worldHeight max _worldWidth))) min -3,
   _zOffSet + (_worldHeight max _worldWidth) +_eyeOffset
   //((_worldSizes select 2) max (_worldSizes select 1)) + (_worldSizes select 2) + _zOffSet +_eyeOffset
 ];

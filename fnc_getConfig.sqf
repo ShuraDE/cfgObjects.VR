@@ -49,7 +49,7 @@ _cfgAll = "(
 [format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
 
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,vehicleClass,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles, [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldLength,_worldWidth,_worldHeight], _bbox],_scrshot_file","exp_def"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles, [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldLength,_worldWidth,_worldHeight], _bbox],_scrshot_file","exp_def"] call ADL_DEBUG;
 
 for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 {
@@ -72,7 +72,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _crew = getNumber((_cfg select _i) >> "crew");
   _picture = getText((_cfg select _i) >> "picture");
   _icon = getText((_cfg select _i) >> "icon");
-  _vehicleClass = getText((_cfg select _i) >> "vehicleClass");
   _slingLoadCargoMemoryPoints = getText((_cfg select _i) >> "slingLoadCargoMemoryPoints");
   _crewCrashProtection = getNumber((_cfg select _i) >> "crewCrashProtection");
   _crewExplosionProtection = getNumber((_cfg select _i) >> "crewExplosionProtection");
@@ -87,7 +86,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
   _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_vehicleClass,_ttl];
 
-  _dataExtend = [_faction,_crew,_picture,_icon,_vehicleClass,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author];
+  _dataExtend = [_faction,_crew,_picture,_icon,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author];
 
   _cargoCoDriver = getArray((_cfg select _i) >> "cargoIsCoDriver");
   _transportSoldier = getNumber((_cfg select _i) >> "transportSoldier");
