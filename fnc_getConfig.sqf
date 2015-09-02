@@ -48,7 +48,20 @@ _cfgAll = "(
 
 
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive,[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks,fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures],armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles, [[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight], _bbox],_scrshot_file","exp_def"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive]", "def_001"] call ADL_DEBUG
+
+//extend ???
+["[faction,crew,picture,icon,slingLoadCargoMemoryPoints,crewCrashProtection,crewExplosionProtection,numberPhysicalWheels,tracksSpeed,CommanderOptics,maxGForce,fireResistance,airCapacity,tf_hasLRradio,author]", "def_002"] call ADL_DEBUG;
+
+["[[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks]", "def_003"] call ADL_DEBUG;
+
+["[fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures]]", "def_004"] call ADL_DEBUG;
+
+["[armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles]","def_005"] call ADL_DEBUG;
+
+["[[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight],[bbox_p1, bbox_p2]]","def_006"] call ADL_DEBUG;
+
+["_scrshot_file","exp_scr"] call ADL_DEBUG;
 
 for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 {
@@ -145,6 +158,12 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   ["data veh: " + str(_dataVehicle)] call ADL_DEBUG;
   */
 
+  [str(_i),"exp_idx"] call ADL_DEBUG;
+  [_dataBase, "exp_001"] call ADL_DEBUG;
+  [_dataExtend, "exp_002"] call ADL_DEBUG;
+  [_dataTransport, "exp_003"] call ADL_DEBUG;
+  [_dataVehicle, "exp_004"] call ADL_DEBUG;
+  [_dataArmor, "exp_005"] call ADL_DEBUG;
 
   if (_class != "" && _type != "" && _description != "") then {
     try {
@@ -153,6 +172,9 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
       _objSpawn = [_class] call ADL_SPAWN_OBJ; //rotation wird nicht angezeigt, aber durchgeführt Oo
       _veh = _objSpawn select 0;
       _sizes = _objSpawn select 1;
+
+
+      [_sizes, "exp_006"] call ADL_DEBUG;
 
       _scrFile = "";
       if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {
@@ -163,13 +185,10 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
              _scrFile = [_class] call FNC_SCR_CAP;
              _scr = true;
            };
-
-           [str(_i) + str(_dataBase+_dataExtend+_dataTransport+_dataVehicle+_dataArmor+[_sizes]+[_scrFile]), "exp_data"]  call ADL_DEBUG;
-
+           [_scrFile, "exp_scr"]  call ADL_DEBUG;
          }
          catch {
-           [str(_i) + str(_dataBase+_dataExtend+_dataTransport+_dataVehicle+_dataArmor+[_sizes]), "exp_data"]  call ADL_DEBUG;
-           [_class, "adl_error"] call ADL_DEBUG;
+           [_class, "exp_err"] call ADL_DEBUG;
          };
       };
     }
