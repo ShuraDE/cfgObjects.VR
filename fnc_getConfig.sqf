@@ -48,7 +48,7 @@ _cfgAll = "(
 
 
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive]", "def_001"] call ADL_DEBUG
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive]", "def_001"] call ADL_DEBUG;
 
 //extend ???
 ["[faction,crew,picture,icon,slingLoadCargoMemoryPoints,crewCrashProtection,crewExplosionProtection,numberPhysicalWheels,tracksSpeed,CommanderOptics,maxGForce,fireResistance,airCapacity,tf_hasLRradio,author]", "def_002"] call ADL_DEBUG;
