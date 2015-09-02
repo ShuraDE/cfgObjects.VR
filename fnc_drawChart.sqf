@@ -85,7 +85,7 @@ _createChart = {
     };
 
     {
-      _points pushBack ("Sign_sphere10cm_EP1" createVehicle position player);
+      _points pushBack ("Sign_Sphere10cm_F" createVehicle position player);
       (_points select ((count _points) - 1)) attachTo [_target, _x];
       (_points select ((count _points) - 1)) setObjectTexture _colr;
     } forEach _loc select 0;

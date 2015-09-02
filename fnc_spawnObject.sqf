@@ -19,8 +19,6 @@ _obj enableSimulation false;
 _obj allowDamage false;
 _obj setDir 180; //warning: boundingbox points -> modelToWorld calc is reversed with  reason model is turn around !!  -.-
 
-hint _objClass;
-
 hint parseText format ["
   <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%1</t><br/>
   <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%2</t><br/>
@@ -102,57 +100,44 @@ try {
   _obj_ld setDir 225;
 
   //upper objects
+  //upper base line
   _z = (_zOffSet + (_worldHeight max _worldWidth)) max 1; //for flip check height and length, min 1 up
 
-  //topdown view upper center
-
-  //add a fake object, dir/up isnt correct displayed
-  _objHolder = createVehicle ["Sign_sphere10cm_EP1", [0, 5, _z], [], 0, "CAN_COLLIDE"];
-  hideObject _objHolder;
-  _objHolder allowDamage false;
-
-  _obj_td_faker = createVehicle [_objClass, [0, _worldHeight max _worldLength, _z], [], 0, "CAN_COLLIDE"];
-  _obj_td_faker allowDamage false;
-  hideObject _obj_td_faker;
-  _obj_td_faker enableSimulation false;
-  [_obj_td_faker, 180, 90] call _setupVector;
-
-  _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
-  _obj_td enableSimulation false;
-  _obj_td attachTo [_objHolder, [0,0, 1]];
-  [_obj_td, 180, 90] call _setupVector;
-  _obj_td allowDamage false;
-  _obj_td enableSimulation false;
-
-  _obj_td setPosASL [getPosASL _obj_td select 0, getPosASL _obj_td select 1, _z];//((_obj_td_faker modelToWorld [0,0,0]) select 2)];
-  //detach _obj_td;
-
   //side view upper right corner
-  _x = _radius2D + _spaceBetweenObjects + (_maxWidth/2);
-  _obj_s = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
-  _obj_s enableSimulation false;
-  _obj_s allowDamage false;
-  //correct orientation from player view
-  _angle_s = ((( getPosASL _obj_s) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_s) select 0) - (( getPosASL player) select 0));
-  _obj_s setDir (180 - _angle_s);
-  //[_obj_s, (180 - _angle_s), 90] call _setupVector;
+    _x = _radius2D + _spaceBetweenObjects + (_maxWidth/2);
+    _obj_s = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+    _obj_s enableSimulation false;
+    _obj_s allowDamage false;
+    //correct orientation from player view
+    _angle_s = ((( getPosASL _obj_s) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_s) select 0) - (( getPosASL player) select 0));
+    _obj_s setDir (180 - _angle_s);
+    //[_obj_s, (180 - _angle_s), 90] call _setupVector;
 
   //rear view upper left corner
-  _x = (_radius2D*-1) - _spaceBetweenObjects - (_maxWidth/2);
-  _obj_r = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
-  _obj_r enableSimulation false;
-  _obj_r allowDamage false;
-  //correct orientation from player view
-  _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
-  _obj_r setDir (90 - _angle_r);
-  //[_obj_r,0,0,0] call FNC_ROTATE;
-  //[_obj,[-10,0,0]] call fnc_SetPitchBankYaw;
-  ////[_obj_r, (90 - _angle_r), 90] call _setupVector;
+    _x = (_radius2D*-1) - _spaceBetweenObjects - (_maxWidth/2);
+    _obj_r = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+    _obj_r enableSimulation false;
+    _obj_r allowDamage false;
+    //correct orientation from player view
+    _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
+    _obj_r setDir (90 - _angle_r);
+    //[_obj_r,0,0,0] call FNC_ROTATE;
+    //[_obj,[-10,0,0]] call fnc_SetPitchBankYaw;
+    ////[_obj_r, (90 - _angle_r), 90] call _setupVector;
+
+  //topdown view upper center
+    _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
+    _obj_td attachTo [_obj, _obj worldToModel [0, 0,_z + ((getPosASL _obj)  select 2)]];
+    _obj_td enableSimulation false;
+    _obj_td setPosASL [0,0, ((getPosASL _obj_r) select 2)];
+    detach _obj_td;
+    [_obj_td, 180, 90] call _setupVector;
+    _obj_td allowDamage false;
 
 
   //draw chart
   // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top
-  [[[_obj_td_faker,5],[_obj_r,1],[_obj_s,2]]] execVM "fnc_drawChart.sqf";
+  [[[_obj,4],[_obj_td,4],[_obj_r,1],[_obj_s,2]]] execVM "fnc_drawChart.sqf";
 }
 catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;
