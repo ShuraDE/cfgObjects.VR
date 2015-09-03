@@ -50,14 +50,13 @@ _cfgAll = "(
 ["Export Data:"] call ADL_DEBUG;
 ["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive]", "def_001"] call ADL_DEBUG;
 
-//extend ???
 ["[faction,crew,picture,icon,slingLoadCargoMemoryPoints,crewCrashProtection,crewExplosionProtection,numberPhysicalWheels,tracksSpeed,CommanderOptics,maxGForce,fireResistance,airCapacity,tf_hasLRradio,author]", "def_002"] call ADL_DEBUG;
 
 ["[[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks]", "def_003"] call ADL_DEBUG;
 
 ["[fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures]]", "def_004"] call ADL_DEBUG;
 
-["[armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorEngine,armorAvionics,armorVRotor,armorHRotor,armorMissiles]","def_005"] call ADL_DEBUG;
+["[armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorAvionics,armorVRotor,armorHRotor,armorMissiles]","def_005"] call ADL_DEBUG;
 
 ["[[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight],[bbox_p1, bbox_p2]]","def_006"] call ADL_DEBUG;
 
@@ -150,7 +149,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
   _dataVehicle = [_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,_hiddenSel,_hiddelSelTex];
 
-  _dataArmor = [_armorStructural,_armorFuel,_armorGlass,_armorLights,_armorWheels,_armorHull,_armorTurret,_armorGun,_armorEngine,_armorTracks,_armorHead,_armorHands,_armorLegs,_armorEngine,_armorAvionics,_armorVRotor,_armorHRotor,_armorMissiles];
+  _dataArmor = [_armorStructural,_armorFuel,_armorGlass,_armorLights,_armorWheels,_armorHull,_armorTurret,_armorGun,_armorEngine,_armorTracks,_armorHead,_armorHands,_armorLegs,_armorAvionics,_armorVRotor,_armorHRotor,_armorMissiles];
 
   /*
   ["data base: " + str(_dataBase)] call ADL_DEBUG;
