@@ -212,5 +212,5 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   if  (DEBUG_EXIT && _i > DEBUG_COUNT) exitWith { true; };
 };
 ["done"] call ADL_DEBUG;
-[str(_cfgSkippedObjects), "skipped"] call ADL_DEBUG;
+[str(_cfgSkippedObjects), "skipped objects:"] call ADL_DEBUG;
 hint ("done with " + str((count(_cfg))-(count(_cfgSkippedObjects))));
