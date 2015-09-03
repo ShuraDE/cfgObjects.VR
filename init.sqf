@@ -16,11 +16,11 @@ PIC_EXT = ".png";
 
 PLAYER_DEFAULT_DIST = 10;
 
-DEBUG_EXIT = true;
+DEBUG_EXIT = false;
 DEBUG_COUNT = 2;
 
 ENABLE_2ND_VEH_TD = true;
-ENABLE_SCREEN = true;
+ENABLE_SCREEN = false;
 
 EXCLUDE_OBJECTS = false;
 

@@ -15,7 +15,6 @@ _zOffSet = 0.2;
 
 _mod = if (configSourceMod(configFile >> "CfgVehicles" >> _objClass) == "") then { "vanilla"; } else { configSourceMod(configFile >> "CfgVehicles" >> _objClass); };
 _objType = getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass");
-
 _enableSimulation = (_objType == "Flag");
 
 
@@ -40,7 +39,7 @@ hint parseText format ["
      getText(configFile >> "CfgVehicles" >> _objClass >> "displayName"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "picture"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "icon"),
-     _objClass,
+     _objType,
      getText(configFile >> "CfgVehicles" >> _objClass >> "faction"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "author"),
      _mod];

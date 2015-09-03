@@ -25,17 +25,17 @@ _scr = false;
 //some mods havnt define correct vehicleClass like ""land_Objects84","House","SAR_ru_architect""
 // genMacro is "House", vehcileClass "SAR_ru_architect"
 
-//Men, Weapons, Ammo  not atm!!!
-_cfg_x= "(
+//no  Weapons, Ammo   atm!!!
+_cfg= "(
   (getNumber (_x >> 'scope') >= 2) &&
   {getText (_x >> '_generalMacro') in ['House','NonStrategic']
     ||
-    {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'Ship', 'Static','Objects','Support','Items','Structures','Wrecks','Fortifications','misc','Misc','A3_Trees','A3_Stones','A3_Plants','A3_Bush','Flag','Training','Objects_Sports','Structures_Sports','Structures_VR','Furniture','Cargo','Tents','Small_items','Dead_bodies','Garbage','Structures_Town','Military','Market','Objects_Airport','Container','Helpers','ItemsUniforms','ItemsHeadgear','ItemsVests','WeaponAccessories','Backpacks','Schild','Signs','Structures_Walls','Structures_Fences']}
+    {getText (_x >> 'vehicleClass') in ['Armored', 'Car', 'Air', 'Ship', 'Static','Objects','Support','Items','Structures','Wrecks','Fortifications','misc','Misc','A3_Trees','A3_Stones','A3_Plants','A3_Bush','Flag','Training','Objects_Sports','Structures_Sports','Structures_VR','Furniture','Cargo','Tents','Small_items','Dead_bodies','Garbage','Structures_Town','Military','Market','Objects_Airport','Container','Helpers','ItemsUniforms','ItemsHeadgear','ItemsVests','WeaponAccessories','Backpacks','Schild','Signs','Structures_Walls','Structures_Fences','Men']}
   }
 )" configClasses (configFile >> "CfgVehicles");
 
 //für testzwecke reduzierte daten
-_cfg = "(
+_cfg_x = "(
   (getNumber (_x >> 'scope') >= 2) &&
     {getText (_x >> 'vehicleClass') in ['Men']}
 )" configClasses (configFile >> "CfgVehicles");
