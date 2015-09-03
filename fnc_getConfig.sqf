@@ -24,6 +24,8 @@ _scr = false;
 
 //some mods havnt define correct vehicleClass like ""land_Objects84","House","SAR_ru_architect""
 // genMacro is "House", vehcileClass "SAR_ru_architect"
+
+//Men, Weapons, Ammo  not atm!!!
 _cfg_x= "(
   (getNumber (_x >> 'scope') >= 2) &&
   {getText (_x >> '_generalMacro') in ['House','NonStrategic']
@@ -35,7 +37,7 @@ _cfg_x= "(
 //für testzwecke reduzierte daten
 _cfg = "(
   (getNumber (_x >> 'scope') >= 2) &&
-    {getText (_x >> 'vehicleClass') in ['Car']}
+    {getText (_x >> 'vehicleClass') in ['Men']}
 )" configClasses (configFile >> "CfgVehicles");
 
 //alle daten inkl. nicht möglichen
@@ -63,8 +65,6 @@ _cfgSkippedObjects = [];
 
 ["_scrshot_file","exp_scr"] call ADL_DEBUG;
 
-//configSourceMod(configFile >> "CfgVehicles" >> "Item_optic_KHS_hex")
-//lol
 
 for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 {

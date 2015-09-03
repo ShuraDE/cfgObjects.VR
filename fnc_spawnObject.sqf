@@ -13,16 +13,17 @@ _zOffSet = 0.2;
 // dir 90  right top, side view
 
 
-_enableSimulation = ((getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass")) == "Flag");
+_mod = if (configSourceMod(configFile >> "CfgVehicles" >> _objClass) == "") then { "vanilla"; } else { configSourceMod(configFile >> "CfgVehicles" >> _objClass); };
+_objType = getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass");
+
+_enableSimulation = (_objType == "Flag");
+
 
 //primary object
 _obj = createVehicle [_objClass, [0,0.1,_zOffSet], [], 0, "CAN_COLLIDE"];
-
 _obj enableSimulation _enableSimulation;
 _obj allowDamage false;
 _obj setDir 180; //warning: boundingbox points -> modelToWorld calc is reversed with  reason model is turn around !!  -.-
-
-_mod = if (configSourceMod(configFile >> "CfgVehicles" >> _objClass) == "") then { "vanilla"; } else { configSourceMod(configFile >> "CfgVehicles" >> _objClass); };
 
 hint parseText format ["
   <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%1</t><br/>
@@ -39,7 +40,7 @@ hint parseText format ["
      getText(configFile >> "CfgVehicles" >> _objClass >> "displayName"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "picture"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "icon"),
-     getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass"),
+     _objClass,
      getText(configFile >> "CfgVehicles" >> _objClass >> "faction"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "author"),
      _mod];
@@ -130,19 +131,26 @@ try {
   //flipped _z a little bit different ;)
   _z = (_zOffSet + (_worldHeight max _worldLength)) max 1; //for flip check height and length, min 1 up
 
+  if (!(_objType in ["Men"])) then {
   //topdown view upper center
     _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
     _obj_td attachTo [_obj, _obj worldToModel [0, 0,_z + ((getPosASL _obj)  select 2)]];
     _obj_td enableSimulation false;
     _obj_td setPosASL [0,0, ((getPosASL _obj_lu) select 2)];
     detach _obj_td;
-    [_obj_td, 180, 90] call _setupVector;
+    //dont turn objects from class
+
+      [_obj_td, 180, 90] call _setupVector;
     _obj_td allowDamage false;
+    //draw chart
+    // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = rear
+    [[[_obj,4],[_obj_td,4],[_obj_lu,1],[_obj_ru,2]]] execVM "fnc_drawChart.sqf";
+  } else {
+    //if men
+    [[[_obj,6]]] execVM "fnc_drawChart.sqf";
+  };
 
 
-  //draw chart
-  // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top
-  [[[_obj,4],[_obj_td,4],[_obj_lu,1],[_obj_ru,2]]] execVM "fnc_drawChart.sqf";
 }
 catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;

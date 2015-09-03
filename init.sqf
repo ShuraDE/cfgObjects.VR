@@ -17,12 +17,12 @@ PIC_EXT = ".png";
 PLAYER_DEFAULT_DIST = 10;
 
 DEBUG_EXIT = true;
-DEBUG_COUNT = 1;
+DEBUG_COUNT = 2;
 
 ENABLE_2ND_VEH_TD = true;
-ENABLE_SCREEN = false;
+ENABLE_SCREEN = true;
 
-EXCLUDE_OBJECTS = true;
+EXCLUDE_OBJECTS = false;
 
 waitUntil {!isNil "bis_fnc_init"};
 removeAllWeapons player;
