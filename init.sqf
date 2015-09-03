@@ -9,6 +9,7 @@ FNC_ROTATE = compile preprocessFileLineNumbers "fnc_rotate.sqf";
 ADL_CLEAN_UP = compile preprocessFileLineNumbers "fnc_cleanUp.sqf";
 ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";
 
+ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 
 PIC_PATH = "D:\Users\Shura\Pictures\arma\";
 PIC_EXT = ".png";
@@ -20,6 +21,8 @@ DEBUG_COUNT = 1;
 
 ENABLE_2ND_VEH_TD = true;
 ENABLE_SCREEN = false;
+
+EXCLUDE_OBJECTS = true;
 
 waitUntil {!isNil "bis_fnc_init"};
 removeAllWeapons player;

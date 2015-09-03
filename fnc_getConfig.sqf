@@ -47,6 +47,12 @@ _cfgAll = "(
 [format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
 
 
+if (EXCLUDE_OBJECTS) then {
+  _exObj = [] call ADL_EXCLUDE;
+  _cfg = _cfg - _exObj;
+};
+
+
 ["Export Data:"] call ADL_DEBUG;
 ["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,_parent,timeToLive]", "def_001"] call ADL_DEBUG;
 
