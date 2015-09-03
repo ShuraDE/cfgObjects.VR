@@ -16,7 +16,7 @@ PIC_EXT = ".png";
 
 PLAYER_DEFAULT_DIST = 10;
 
-DEBUG_EXIT = false;
+DEBUG_EXIT = true;
 DEBUG_COUNT = 1;
 
 ENABLE_2ND_VEH_TD = true;
@@ -28,6 +28,9 @@ waitUntil {!isNil "bis_fnc_init"};
 removeAllWeapons player;
 //showHUD false; //stance wird noch immer gezeigt
 sleep (3);
+
+setWind [-25, 0, true];
+0 setWindDir 270;
 
 player allowDamage false;
 player enableSimulation false;

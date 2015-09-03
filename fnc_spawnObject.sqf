@@ -13,11 +13,16 @@ _zOffSet = 0.2;
 // dir 90  right top, side view
 
 
+_enableSimulation = ((getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass")) == "Flag");
+
 //primary object
 _obj = createVehicle [_objClass, [0,0.1,_zOffSet], [], 0, "CAN_COLLIDE"];
-_obj enableSimulation false;
+
+_obj enableSimulation _enableSimulation;
 _obj allowDamage false;
 _obj setDir 180; //warning: boundingbox points -> modelToWorld calc is reversed with  reason model is turn around !!  -.-
+
+_mod = if (configSourceMod(configFile >> "CfgVehicles" >> _objClass) == "") then { "vanilla"; } else { configSourceMod(configFile >> "CfgVehicles" >> _objClass); };
 
 hint parseText format ["
   <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%1</t><br/>
@@ -27,7 +32,8 @@ hint parseText format ["
   <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'><img size='4' image='%4'/></t><br/>
   <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%5</t><br/>
   <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%6</t><br/>
-  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t><br/>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%8</t>
   ",
      _objClass,
      getText(configFile >> "CfgVehicles" >> _objClass >> "displayName"),
@@ -35,10 +41,8 @@ hint parseText format ["
      getText(configFile >> "CfgVehicles" >> _objClass >> "icon"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "faction"),
-     getText(configFile >> "CfgVehicles" >> _objClass >> "author")];
-
-
-[_objClass] call ADL_DEBUG;
+     getText(configFile >> "CfgVehicles" >> _objClass >> "author"),
+     _mod];
 
 //get sizes for calculation
 _bbox = boundingBox _obj;
@@ -87,49 +91,50 @@ try {
   _x = _radius2D + _spaceBetweenObjects + (_maxWidth/2);
   _pos = [ _x, 0, _zOffSet];
   _obj_rd = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
-  _obj_rd enableSimulation false;
+  _obj_rd enableSimulation _enableSimulation;
   _obj_rd allowDamage false;
-  _obj_rd setDir 135;
 
   //left down object
   _x = (_radius2D*-1) - _spaceBetweenObjects - (_maxWidth/2);
   _pos = [ _x, 0, _zOffSet];
   _obj_ld = createVehicle [_objClass, _pos, [], 0, "CAN_COLLIDE"];
-  _obj_ld enableSimulation false;
+  _obj_ld enableSimulation _enableSimulation;
   _obj_ld allowDamage false;
-  _obj_ld setDir 225;
+
+  //angle correction lower line
+  _angle_cor = ((( getPosASL _obj_ld) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_ld) select 0) - (( getPosASL player) select 0));
+  _obj_ld setDir (90 + _angle_cor);
+  _obj_rd setDir (270 - _angle_cor);
+
 
   //upper objects
   //upper base line
-  _z = (_zOffSet + (_worldHeight max _worldWidth)) max 1; //for flip check height and length, min 1 up
+  _z = (_zOffSet + (_worldHeight max _worldLength)) max 1; //for flip check height and length, min 1 up
 
   //side view upper right corner
     _x = _radius2D + _spaceBetweenObjects + (_maxWidth/2);
-    _obj_s = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
-    _obj_s enableSimulation false;
-    _obj_s allowDamage false;
+    _obj_ru = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+    _obj_ru enableSimulation false;
+    _obj_ru allowDamage false;
     //correct orientation from player view
-    _angle_s = ((( getPosASL _obj_s) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_s) select 0) - (( getPosASL player) select 0));
-    _obj_s setDir (180 - _angle_s);
-    //[_obj_s, (180 - _angle_s), 90] call _setupVector;
+    _obj_ru setDir (_angle_cor);
 
   //rear view upper left corner
     _x = (_radius2D*-1) - _spaceBetweenObjects - (_maxWidth/2);
-    _obj_r = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
-    _obj_r enableSimulation false;
-    _obj_r allowDamage false;
+    _obj_lu = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
+    _obj_lu enableSimulation false;
+    _obj_lu allowDamage false;
     //correct orientation from player view
-    _angle_r = ((( getPosASL _obj_r) select 1) - ((getPosASL player) select 1)) atan2 ((( getPosASL _obj_r) select 0) - (( getPosASL player) select 0));
-    _obj_r setDir (90 - _angle_r);
-    //[_obj_r,0,0,0] call FNC_ROTATE;
-    //[_obj,[-10,0,0]] call fnc_SetPitchBankYaw;
-    ////[_obj_r, (90 - _angle_r), 90] call _setupVector;
+    _obj_lu setDir (90 - _angle_cor);
+
+  //flipped _z a little bit different ;)
+  _z = (_zOffSet + (_worldHeight max _worldLength)) max 1; //for flip check height and length, min 1 up
 
   //topdown view upper center
     _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
     _obj_td attachTo [_obj, _obj worldToModel [0, 0,_z + ((getPosASL _obj)  select 2)]];
     _obj_td enableSimulation false;
-    _obj_td setPosASL [0,0, ((getPosASL _obj_r) select 2)];
+    _obj_td setPosASL [0,0, ((getPosASL _obj_lu) select 2)];
     detach _obj_td;
     [_obj_td, 180, 90] call _setupVector;
     _obj_td allowDamage false;
@@ -137,7 +142,7 @@ try {
 
   //draw chart
   // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top
-  [[[_obj,4],[_obj_td,4],[_obj_r,1],[_obj_s,2]]] execVM "fnc_drawChart.sqf";
+  [[[_obj,4],[_obj_td,4],[_obj_lu,1],[_obj_ru,2]]] execVM "fnc_drawChart.sqf";
 }
 catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;
