@@ -19,10 +19,10 @@ PLAYER_DEFAULT_DIST = 10;
 
 //exit after count
 DEBUG_EXIT = false;
-DEBUG_COUNT = 2;
+DEBUG_COUNT = 4;
 
 //enable screen shots
-ENABLE_SCREEN = true;
+ENABLE_SCREEN = false;
 
 //exclude objects from array in "exclude_classes.sqf"
 EXCLUDE_OBJECTS = false;

@@ -26,7 +26,7 @@ _scr = false;
 // genMacro is "House", vehcileClass "SAR_ru_architect"
 
 //no  Weapons, Ammo   atm!!!
-_cfg= "(
+_cfg_regular= "(
   (getNumber (_x >> 'scope') >= 2) &&
   {getText (_x >> '_generalMacro') in ['House','NonStrategic']
     ||
@@ -35,13 +35,19 @@ _cfg= "(
 )" configClasses (configFile >> "CfgVehicles");
 
 //für testzwecke reduzierte daten
-_cfg_x = "(
+_cfg_test = "(
   (getNumber (_x >> 'scope') >= 2) &&
     {getText (_x >> 'vehicleClass') in ['Men']}
 )" configClasses (configFile >> "CfgVehicles");
 
-//alle daten inkl. nicht möglichen
-_cfgAll = "(
+//mod basiert
+_cfg = "(
+ (getNumber (_x >> 'scope') >= 2) &&
+ {configSourceMod(_x) in ['@RHSUSF','@RHSAFRF']}
+)" configClasses (configFile >> "CfgVehicles");
+
+//alle daten inkl. evtl. nicht möglichen
+_cfg_all = "(
   (getNumber (_x >> 'scope') >= 2)
 )" configClasses (configFile >> "CfgVehicles");
 
@@ -86,6 +92,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _side = getNumber((_cfg select _i) >> "side");
     _model = getText((_cfg select _i) >> "model");
     _parent = inheritsFrom (configFile >> "CfgVehicles" >> _class);
+    _vehicleClass = getText((_cfg select _i) >> "vehicleClass");
     _ttl = getNumber((_cfg select _i) >> "timeToLive");
     _mod = configSourceMod(_cfg select _i);
 
@@ -104,7 +111,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _airCapacity = getNumber((_cfg select _i) >> "airCapacity");
     _tf_hasLRradio = getNumber((_cfg select _i) >> "tf_hasLRradio");
     _author = getText((_cfg select _i) >> "author");
-
 
     _cargoCoDriver = getArray((_cfg select _i) >> "cargoIsCoDriver");
     _transportSoldier = getNumber((_cfg select _i) >> "transportSoldier");

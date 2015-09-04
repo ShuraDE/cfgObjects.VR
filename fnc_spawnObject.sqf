@@ -14,9 +14,13 @@ _zOffSet = 0.2;
 
 
 _mod = if (configSourceMod(configFile >> "CfgVehicles" >> _objClass) == "") then { "vanilla"; } else { configSourceMod(configFile >> "CfgVehicles" >> _objClass); };
+
 _objType = getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass");
+
 _enableSimulation = (_objType == "Flag");
 
+_displayName = getText(configFile >> "CfgVehicles" >> _objClass >> "displayName");
+_displayName = [_displayName,"&","&amp;"] call CBA_fnc_replace;
 
 //primary object
 _obj = createVehicle [_objClass, [0,0.1,_zOffSet], [], 0, "CAN_COLLIDE"];
@@ -36,7 +40,7 @@ hint parseText format ["
   <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%8</t>
   ",
      _objClass,
-     getText(configFile >> "CfgVehicles" >> _objClass >> "displayName"),
+     _displayName,
      getText(configFile >> "CfgVehicles" >> _objClass >> "picture"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "icon"),
      _objType,
