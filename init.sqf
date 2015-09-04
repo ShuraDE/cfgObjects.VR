@@ -18,14 +18,14 @@ PIC_EXT = ".png";
 PLAYER_DEFAULT_DIST = 10;
 
 //exit after count
-DEBUG_EXIT = false;
-DEBUG_COUNT = 4;
+DEBUG_EXIT = true;
+DEBUG_COUNT = 5;
 
 //enable screen shots
 ENABLE_SCREEN = false;
 
 //exclude objects from array in "exclude_classes.sqf"
-EXCLUDE_OBJECTS = false;
+EXCLUDE_OBJECTS = true;
 
 waitUntil {!isNil "bis_fnc_init"};
 removeAllWeapons player;

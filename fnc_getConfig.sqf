@@ -35,15 +35,15 @@ _cfg_regular= "(
 )" configClasses (configFile >> "CfgVehicles");
 
 //für testzwecke reduzierte daten
-_cfg_test = "(
+_cfg = "(
   (getNumber (_x >> 'scope') >= 2) &&
-    {getText (_x >> 'vehicleClass') in ['Men']}
+    {getText (_x >> 'vehicleClass') in ['WeaponsPrimary']}
 )" configClasses (configFile >> "CfgVehicles");
 
 //mod basiert
-_cfg = "(
+_cfg_mod = "(
  (getNumber (_x >> 'scope') >= 2) &&
- {configSourceMod(_x) in ['@RHSUSF','@RHSAFRF']}
+ {configSourceMod(_x) in ['@RHSAFRF']}
 )" configClasses (configFile >> "CfgVehicles");
 
 //alle daten inkl. evtl. nicht möglichen
@@ -67,7 +67,7 @@ _cfgSkippedObjects = [];
 
 ["[armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorAvionics,armorVRotor,armorHRotor,armorMissiles]","def_005"] call ADL_DEBUG;
 
-["[[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight],[bbox_p1, bbox_p2]]","def_006"] call ADL_DEBUG;
+["[[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight],[bbox_p1, bbox_p2], parentClassHira]","def_006"] call ADL_DEBUG;
 
 ["_scrshot_file","exp_scr"] call ADL_DEBUG;
 
@@ -188,9 +188,9 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
         _objSpawn = [_class] call ADL_SPAWN_OBJ; //rotation wird nicht angezeigt, aber durchgeführt Oo
         _veh = _objSpawn select 0;
         _sizes = _objSpawn select 1;
+        _parentClass = _objSpawn select 2;
 
-
-        [_sizes, "exp_006"] call ADL_DEBUG;
+        [[_sizes, _parentClass], "exp_006"] call ADL_DEBUG;
 
         _scrFile = "";
         if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {
