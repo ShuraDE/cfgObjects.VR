@@ -86,12 +86,11 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _side = getNumber((_cfg select _i) >> "side");
     _model = getText((_cfg select _i) >> "model");
     _parent = inheritsFrom (configFile >> "CfgVehicles" >> _class);
-    _vehicleClass = getText((_cfg select _i) >> "vehicleClass");
     _ttl = getNumber((_cfg select _i) >> "timeToLive");
     _mod = configSourceMod(_cfg select _i);
 
     _faction = getText((_cfg select _i) >> "faction");
-    _crew = getNumber((_cfg select _i) >> "crew");
+    _crew = getText((_cfg select _i) >> "crew");
     _picture = getText((_cfg select _i) >> "picture");
     _icon = getText((_cfg select _i) >> "icon");
     _slingLoadCargoMemoryPoints = getText((_cfg select _i) >> "slingLoadCargoMemoryPoints");
@@ -153,7 +152,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _armorHRotor =  getNumber((_cfg select _i) >> "armorHRotor"); // = 0.7;
     _armorMissiles =  getNumber((_cfg select _i) >> "armorMissiles"); // = 1.6;
 
-    _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_vehicleClass,_ttl,_mod];
+    _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_ttl,_mod];
 
     _dataExtend = [_faction,_crew,_picture,_icon,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author];
 

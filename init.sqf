@@ -14,14 +14,17 @@ ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 PIC_PATH = "D:\Users\Shura\Pictures\arma\";
 PIC_EXT = ".png";
 
+//default distance
 PLAYER_DEFAULT_DIST = 10;
 
+//exit after count
 DEBUG_EXIT = false;
 DEBUG_COUNT = 2;
 
-ENABLE_2ND_VEH_TD = true;
-ENABLE_SCREEN = false;
+//enable screen shots
+ENABLE_SCREEN = true;
 
+//exclude objects from array in "exclude_classes.sqf"
 EXCLUDE_OBJECTS = false;
 
 waitUntil {!isNil "bis_fnc_init"};
