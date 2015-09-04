@@ -18,11 +18,11 @@ PIC_EXT = ".png";
 PLAYER_DEFAULT_DIST = 10;
 
 //exit after count
-DEBUG_EXIT = true;
+DEBUG_EXIT = false;
 DEBUG_COUNT = 5;
 
 //enable screen shots
-ENABLE_SCREEN = false;
+ENABLE_SCREEN = true;
 
 //exclude objects from array in "exclude_classes.sqf"
 EXCLUDE_OBJECTS = true;

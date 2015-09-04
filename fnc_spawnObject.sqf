@@ -22,8 +22,7 @@ _enableSimulation = (_objType == "Flag");
 _displayName = getText(configFile >> "CfgVehicles" >> _objClass >> "displayName");
 _displayName = [_displayName,"&","&amp;"] call CBA_fnc_replace;
 
-_bIsWeapon = (_objType in ['WeaponsPrimary','WeaponsSecondary','WeaponsLauncher','WeaponsHandgun']);
-
+_bIsWeapon = (_objType in ['WeaponsPrimary','WeaponsSecondary','WeaponsHandgun']);
 
 _setupVector =  {
   _turnObj = _this select 0;
@@ -54,6 +53,24 @@ _obj = createVehicle [_objClass, [0,0.1,_zOffSet], [], 0, "CAN_COLLIDE"];
 _obj enableSimulation _enableSimulation;
 _obj allowDamage false;
 
+_parentClass = "unkown";
+if (_obj isKindOf 'Man') then { _parentClass = "Man"; };
+if (_obj isKindOf 'StaticWeapon') then { _parentClass = "StaticWeapon"; };
+if (_obj isKindOf 'Car') then { _parentClass = "Car"; };
+if (_obj isKindOf 'Tank') then { _parentClass = "Tank"; };
+if (_obj isKindOf 'Motorcycle') then { _parentClass = "Motorcycle"; };
+if (_obj isKindOf 'Helicopter') then { _parentClass = "Helicopter"; };
+if (_obj isKindOf 'Plane') then { _parentClass = "Plane"; };
+if (_obj isKindOf 'Ship') then { _parentClass = "Ship"; };
+if (_obj isKindOf 'Fortress') then { _parentClass = "Fortress"; };
+if (_obj isKindOf 'Building') then { _parentClass = "Building"; };
+if (_obj isKindOf 'Thing') then { _parentClass = "Thing"; };
+if (_objType == 'WeaponsPrimary') then { _parentClass = "WeaponsPrimary"; };
+if (_objType == 'WeaponsSecondary') then { _parentClass = "WeaponsSecondary"; };
+if (_objType == 'WeaponsHandgun') then { _parentClass = "WeaponsHandgun"; };
+
+//_objType in ['WeaponsPrimary','WeaponsSecondary','WeaponsHandgun']);
+
 if (_bIsWeapon) then {
   [_obj, 180, 200] call _setupVector;
   _obj setPosASL [0,0.1,5.5];
@@ -73,7 +90,8 @@ hint parseText format ["
   <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%5</t><br/>
   <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%6</t><br/>
   <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t><br/>
-  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%8</t>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%8</t><br/>
+  <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%9</t>
   ",
      _objClass,
      _displayName,
@@ -82,7 +100,8 @@ hint parseText format ["
      _objType,
      getText(configFile >> "CfgVehicles" >> _objClass >> "faction"),
      getText(configFile >> "CfgVehicles" >> _objClass >> "author"),
-     _mod];
+     _mod,
+     _parentClass];
 
 //get sizes for calculation
 _bbox = boundingBox _obj;
@@ -180,18 +199,6 @@ catch {
   ["error calculation spawn more then one object", "error"] call ADL_DEBUG;
 };
 
-_parentClass = "N/A";
-if (_obj isKindOf 'Man') then { _parentClass = "Man"; };
-if (_obj isKindOf 'StaticWeapon') then { _parentClass = "StaticWeapon"; };
-if (_obj isKindOf 'Car') then { _parentClass = "Car"; };
-if (_obj isKindOf 'Tank') then { _parentClass = "Tank"; };
-if (_obj isKindOf 'Motorcycle') then { _parentClass = "Motorcycle"; };
-if (_obj isKindOf 'Helicopter') then { _parentClass = "Helicopter"; };
-if (_obj isKindOf 'Plane') then { _parentClass = "Plane"; };
-if (_obj isKindOf 'Ship') then { _parentClass = "Ship"; };
-if (_obj isKindOf 'Fortress') then { _parentClass = "Fortress"; };
-if (_obj isKindOf 'Building') then { _parentClass = "Building"; };
-if (_obj isKindOf 'Thing') then { _parentClass = "Thing"; };
 //return major spawn object with size array
 //additional return parent class
 [_obj,_sizes, _parentClass];

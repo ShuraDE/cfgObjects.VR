@@ -37,7 +37,7 @@ _cfg_regular= "(
 //für testzwecke reduzierte daten
 _cfg = "(
   (getNumber (_x >> 'scope') >= 2) &&
-    {getText (_x >> 'vehicleClass') in ['WeaponsPrimary']}
+    {getText (_x >> 'vehicleClass') in ['WeaponsSecondary']}
 )" configClasses (configFile >> "CfgVehicles");
 
 //mod basiert
