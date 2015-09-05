@@ -190,7 +190,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
         _sizes = _objSpawn select 1;
         _parentClass = _objSpawn select 2;
 
-        [[_sizes, _parentClass], "exp_006"] call ADL_DEBUG;
+        [[_sizes select 0, _sizes select 1, _sizes select 2, _sizes select 3, _parentClass], "exp_006"] call ADL_DEBUG;
 
         _scrFile = "";
         if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {

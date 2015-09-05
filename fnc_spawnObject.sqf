@@ -25,6 +25,7 @@ _displayName = getText(configFile >> "CfgVehicles" >> _objClass >> "displayName"
 _displayName = [_displayName,"&","&amp;"] call CBA_fnc_replace;
 
 _bIsWeapon = (_objType in ['WeaponsPrimary','WeaponsSecondary','WeaponsHandgun']);
+_bIsBackpack = (_objType == 'Backpacks');
 
 _setupVector =  {
   _turnObj = _this select 0;
@@ -152,7 +153,7 @@ try {
   //upper base line
   _z = (_zOffSet + (_worldHeight max _worldLength)) max 1; //for flip check height and length, min 1 up
 
-  if (!_bIsWeapon)  then {
+  if (!(_bIsWeapon || _bIsBackpack))  then {
     //side view upper right corner
       _x = _radius2D + _spaceBetweenObjects + (_maxWidth/2);
       _obj_ru = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
@@ -174,7 +175,7 @@ try {
   };
   //_objType in ["Men"]
   //if infantry, dont spawn 6th one
-  if ((_obj isKindOf 'Man') || _bIsWeapon) then {
+  if ((_obj isKindOf 'Man') || _bIsWeapon || _bIsBackpack) then {
     //if men or weapon
     [[[_obj,6]]] execVM "fnc_drawChart.sqf";
   } else {
