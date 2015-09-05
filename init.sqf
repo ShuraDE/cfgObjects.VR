@@ -15,7 +15,7 @@ PIC_PATH = "D:\Users\Shura\Pictures\arma\";
 PIC_EXT = ".png";
 
 //default distance
-PLAYER_DEFAULT_DIST = 10;
+//PLAYER_DEFAULT_DIST = 10;
 
 //exit after count
 DEBUG_EXIT = false;
@@ -25,7 +25,7 @@ DEBUG_COUNT = 5;
 ENABLE_SCREEN = false;
 
 //exclude objects from array in "exclude_classes.sqf"
-EXCLUDE_OBJECTS = true;
+EXCLUDE_OBJECTS = false;
 
 waitUntil {!isNil "bis_fnc_init"};
 removeAllWeapons player;
