@@ -1,12 +1,13 @@
-for i in ./*.png; do convert -resize 50% $i $i; done
+for i in ./*.png; do convert -resize 70% $i $i; done
 
 20% für thumbs
 
 wiki bild import
 php /var/www/wiki/mediawiki-1.25.1/maintenance/importImages.php /var/www/wiki/mediawiki-1.25.1/arma_pic_thumbs/test/ gif bmp png jpg GIF PNG BMP
 
-php /var/www/wiki/mediawiki-1.25.1/maintenance/importImages.php --comment="[[Kategorie:cfgVehicles pictures]]" --overwrite  /var/www/wiki/mediawiki-1.25.1/arma_pic_thumbs/classes/ gif bmp png jpg GIF PNG BMP
+php /var/www/wiki/mediawiki-1.25.1/maintenance/importImages.php --comment="[[Kategorie:cfgVehicles pictures]]" --overwrite  /var/www/wiki/mediawiki-1.25.1/arma_pictures/new/ gif bmp png jpg GIF PNG BMP
 
+php /var/www/wiki/mediawiki-1.25.1/maintenance/importImages.php --comment="[[Kategorie:cfgVehicles pictures]]" --overwrite  /var/www/wiki/mediawiki-1.25.1/arma_pic_thumbs/classes/ gif bmp png jpg GIF PNG BMP
 
 bild zuschneiden
 for i in ./*.png; do convert -crop 100x100+80+51 $i $i; done

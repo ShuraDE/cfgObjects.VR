@@ -1,3 +1,5 @@
+private ["_obj_ru","_obj_lu"];
+
 _objClass = _this select 0;
 _spaceBetweenObjects = 1;
 _zOffSet = 0.2;
@@ -65,9 +67,7 @@ if (_obj isKindOf 'Ship') then { _parentClass = "Ship"; };
 if (_obj isKindOf 'Fortress') then { _parentClass = "Fortress"; };
 if (_obj isKindOf 'Building') then { _parentClass = "Building"; };
 if (_obj isKindOf 'Thing') then { _parentClass = "Thing"; };
-if (_objType == 'WeaponsPrimary') then { _parentClass = "WeaponsPrimary"; };
-if (_objType == 'WeaponsSecondary') then { _parentClass = "WeaponsSecondary"; };
-if (_objType == 'WeaponsHandgun') then { _parentClass = "WeaponsHandgun"; };
+if (_bIsWeapon) then { _parentClass = "Weapons"; };
 
 //_objType in ['WeaponsPrimary','WeaponsSecondary','WeaponsHandgun']);
 
@@ -162,7 +162,7 @@ try {
       _obj_ru setDir (_angle_cor);
 
     //rear view upper left corner
-      _x = (_radius2D*-1) - _spaceBetweenObjects - (_maxWidth/2);
+      _x = _x * -1; //(_radius2D*-1) - _spaceBetweenObjects - (_maxWidth/2);
       _obj_lu = createVehicle [_objClass, [_x, 0, _z], [], 0, "CAN_COLLIDE"];
       _obj_lu enableSimulation false;
       _obj_lu allowDamage false;
@@ -174,8 +174,11 @@ try {
   };
   //_objType in ["Men"]
   //if infantry, dont spawn 6th one
-  if (!(_obj isKindOf 'Man') && !_bIsWeapon) then {
-  //topdown view upper center
+  if ((_obj isKindOf 'Man') || _bIsWeapon) then {
+    //if men or weapon
+    [[[_obj,6]]] execVM "fnc_drawChart.sqf";
+  } else {
+    //topdown view upper center
     _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
     _obj_td attachTo [_obj, _obj worldToModel [0, 0,_z + ((getPosASL _obj)  select 2)]];
     _obj_td enableSimulation false;
@@ -183,14 +186,15 @@ try {
     detach _obj_td;
     //dont turn objects from class
 
-      [_obj_td, 180, 90] call _setupVector;
+    [_obj_td, 180, 90] call _setupVector;
     _obj_td allowDamage false;
     //draw chart
-    // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = rear
-    [[[_obj,4],[_obj_td,4],[_obj_lu,1],[_obj_ru,2]]] execVM "fnc_drawChart.sqf";
-  } else {
-    //if men or weapon
-    [[[_obj,6]]] execVM "fnc_drawChart.sqf";
+    try {
+      // 1 = front, 2 = side left, 3 = side right, 4 = buttom, 5 = top, 6 = rear
+      [[[_obj,4],[_obj_td,4],[_obj_lu,1],[_obj_ru,2]]] execVM "fnc_drawChart.sqf";
+    } catch {
+      ["error draw chart","CERROR"] call ADL_DEBUG;
+    }
   };
 
 

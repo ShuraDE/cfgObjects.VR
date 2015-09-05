@@ -22,7 +22,7 @@ DEBUG_EXIT = false;
 DEBUG_COUNT = 5;
 
 //enable screen shots
-ENABLE_SCREEN = true;
+ENABLE_SCREEN = false;
 
 //exclude objects from array in "exclude_classes.sqf"
 EXCLUDE_OBJECTS = true;
