@@ -11,3 +11,5 @@ php /var/www/wiki/mediawiki-1.25.1/maintenance/importImages.php --comment="[[Kat
 
 bild zuschneiden
 for i in ./*.png; do convert -crop 100x100+80+51 $i $i; done
+
+php importDump.php --conf ../LocalSettings.php ../dir/import.xml
