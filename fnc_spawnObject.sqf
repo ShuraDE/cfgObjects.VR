@@ -197,6 +197,7 @@ try {
       ["error draw chart","CERROR"] call ADL_DEBUG;
     }
   };
+  if (ENABLE_SCREEN) then { sleep 1; };
 
 
 }

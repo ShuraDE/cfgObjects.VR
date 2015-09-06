@@ -57,7 +57,7 @@ _cfgSkippedObjects = [];
 [format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
 
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,parent,timeToLive,mod_folder]", "def_001"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,parent,timeToLive,mod_folder,allParents]", "def_001"] call ADL_DEBUG;
 
 ["[faction,crew,picture,icon,slingLoadCargoMemoryPoints,crewCrashProtection,crewExplosionProtection,numberPhysicalWheels,tracksSpeed,CommanderOptics,maxGForce,fireResistance,airCapacity,tf_hasLRradio,author]", "def_002"] call ADL_DEBUG;
 
@@ -71,7 +71,6 @@ _cfgSkippedObjects = [];
 
 ["_scrshot_file","exp_scr"] call ADL_DEBUG;
 
-
 for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 {
   _class = configName(_cfg select _i);
@@ -80,6 +79,8 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     //skip
     _cfgSkippedObjects = _cfgSkippedObjects + [_class];
   } else {
+
+    setDate [2012, 2, 25, 16, 0];
 
     _genMac = getText((_cfg select _i) >> "_generalMacro");
     _type = getText((_cfg select _i) >> "vehicleClass");
@@ -95,6 +96,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _vehicleClass = getText((_cfg select _i) >> "vehicleClass");
     _ttl = getNumber((_cfg select _i) >> "timeToLive");
     _mod = configSourceMod(_cfg select _i);
+    _allParents = [(configFile >> "CfgVehicles" >> _class), true] call BIS_fnc_returnParents;
 
     _faction = getText((_cfg select _i) >> "faction");
     _crew = getText((_cfg select _i) >> "crew");
@@ -158,7 +160,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _armorHRotor =  getNumber((_cfg select _i) >> "armorHRotor"); // = 0.7;
     _armorMissiles =  getNumber((_cfg select _i) >> "armorMissiles"); // = 1.6;
 
-    _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_ttl,_mod];
+    _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_ttl,_mod, _allParents];
 
     _dataExtend = [_faction,_crew,_picture,_icon,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author];
 

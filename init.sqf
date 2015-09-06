@@ -37,4 +37,8 @@ setWind [-25, 0, true];
 
 player allowDamage false;
 player enableSimulation false;
+
+//wait until tfar
+sleep 5;
+
 [] spawn compile preprocessFileLineNumbers "fnc_getConfig.sqf";
