@@ -23,6 +23,8 @@ _enableSimulation = (_objType == "Flag");
 
 _displayName = getText(configFile >> "CfgVehicles" >> _objClass >> "displayName");
 _displayName = [_displayName,"&","&amp;"] call CBA_fnc_replace;
+_author = getText(configFile >> "CfgVehicles" >> _objClass >> "author");
+_author = [_author,"&","&amp;"] call CBA_fnc_replace;
 
 _bIsWeapon = (_objType in ['WeaponsPrimary','WeaponsSecondary','WeaponsHandgun']);
 _bIsBackpack = (_objType == 'Backpacks');
