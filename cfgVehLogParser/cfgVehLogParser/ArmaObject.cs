@@ -74,6 +74,10 @@ namespace cfgVehLogParser
             }
 
         }
+        public string getAsArmaArray()
+        {
+            return "[" + String.Join(",", (from ls in _parents select ls.entry).ToArray()) + "]";
+        }
         public ParentHiraColl() {}
     }
 

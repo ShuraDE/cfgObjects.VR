@@ -211,7 +211,7 @@ namespace cfgVehLogParser
             WriteOut(allObj, filePath);
             Console.WriteLine("write done");
   
-            Console.ReadLine();
+            //Console.ReadLine();
 
             return 0;
 
@@ -270,7 +270,8 @@ namespace cfgVehLogParser
                         file.WriteLine("|genLogErr=" + SecurityElement.Escape(allObj.objList[x + i].logContainsErrors.ToString()));
                         file.WriteLine("|logErr=" + SecurityElement.Escape(String.Join("\n",allObj.objList[x + i].log.loglines)));
                         file.WriteLine("|createable=" + SecurityElement.Escape(allObj.objList[x + i].createable.ToString()));
-                        if (allObj.objList[x + i].parentClassHirachical != null) { file.WriteLine("|hiraTree=" + SecurityElement.Escape(allObj.objList[x + i].parentClassHirachical.ToString())); }
+                        //if (allObj.objList[x + i].parentClassHirachical != null) { file.WriteLine("|hiraTree=" + SecurityElement.Escape(allObj.objList[x + i].parentClassHirachical.ToString())); }
+                        file.WriteLine("|allParents=" + SecurityElement.Escape(allObj.objList[x + i].parents.getAsArmaArray()));
 
                         file.WriteLine("|accuracy=" + SecurityElement.Escape(allObj.objList[i + x].accuracy));
                         file.WriteLine("|camouflage=" + SecurityElement.Escape(allObj.objList[i + x].camouflage));
@@ -306,12 +307,12 @@ namespace cfgVehLogParser
                         file.WriteLine("</text></revision></page>");
                     }
 
-                    createWikiCategories("Objekt Author", allObj.author, file, "AttObjAuthor");
-                    createWikiCategories("Objekt Mod", allObj.mod, file, "AttModBase");
-                    createWikiCategories("Objekt Typ", allObj.type, file, "AttObjType");
-                    createWikiCategories("Objekt Subtyp", allObj.subtype, file, "AttObjSubType");
-                    createWikiCategories("Objekt Faction", allObj.factions, file, "AttFaction");
-                    createWikiCategories("Objekt Root", allObj.root, file, "AttClassParent");
+                    createWikiCategories("Objekt Author", allObj.author, file, "AttObjAuthor", "Objekte nach Author");
+                    createWikiCategories("Objekt Mod", allObj.mod, file, "AttModBase", "Objekte nach Mod");
+                    createWikiCategories("Objekt Typ", allObj.type, file, "AttObjType", "Objekte nach Typ");
+                    createWikiCategories("Objekt Subtyp", allObj.subtype, file, "AttObjSubType", "Objekte nach Subtyp");
+                    createWikiCategories("Objekt Faction", allObj.factions, file, "AttFaction", "Objekte nach Faction" );
+                    createWikiCategories("Objekt Root", allObj.root, file, "AttClassParent", "Objekte nach Parentclass");
 
                     /* create kat pages with queries for:
                      *  [[Kategorie:Objekt Author {{{Author|}}}]]
@@ -328,7 +329,7 @@ namespace cfgVehLogParser
                 }
             }
         }
-        static internal void createWikiCategories(string catLabel, Dictionary<string, int> catColl, StreamWriter file, string catSMWAtt)
+        static internal void createWikiCategories(string catLabel, Dictionary<string, int> catColl, StreamWriter file, string catSMWAtt, string catUpperCat)
         {
             foreach (string cat in catColl.Keys)
             {
@@ -343,6 +344,7 @@ namespace cfgVehLogParser
                 file.WriteLine("|?Has image=Thumb");
                 file.WriteLine("|?genLogErr=LogErr");
                 file.WriteLine("}}");
+                file.WriteLine("[[Category:" + catUpperCat + "]]");
                 file.WriteLine("</text></revision></page>");
             }
         }

@@ -9,3 +9,6 @@ Y:\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.pdb
 C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\bin\Debug\cfgVehLogParser.exe.config
 C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.exe
 C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.pdb
+C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\bin\Debug\cfgVehLogParser.exe
+C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\bin\Debug\cfgVehLogParser.pdb
+C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.csprojResolveAssemblyReference.cache
