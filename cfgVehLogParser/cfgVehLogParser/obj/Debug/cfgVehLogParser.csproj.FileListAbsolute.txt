@@ -1,0 +1,11 @@
+Y:\logParserGA\logParserGA\bin\Debug\cfgVehLogParser.exe.config
+Y:\logParserGA\logParserGA\bin\Debug\cfgVehLogParser.exe
+Y:\logParserGA\logParserGA\bin\Debug\cfgVehLogParser.pdb
+Y:\logParserGA\logParserGA\obj\Debug\cfgVehLogParser.exe
+Y:\logParserGA\logParserGA\obj\Debug\cfgVehLogParser.pdb
+Y:\cfgVehLogParser\cfgVehLogParser\bin\Debug\cfgVehLogParser.exe.config
+Y:\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.exe
+Y:\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.pdb
+C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\bin\Debug\cfgVehLogParser.exe.config
+C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.exe
+C:\Users\schke\Documents\GitHub\cfgObjects.VR\cfgVehLogParser\cfgVehLogParser\obj\Debug\cfgVehLogParser.pdb

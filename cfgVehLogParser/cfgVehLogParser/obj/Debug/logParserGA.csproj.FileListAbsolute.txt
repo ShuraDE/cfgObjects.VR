@@ -1,0 +1,18 @@
+c:\users\schke\documents\visual studio 2013\Projects\logParserGA\logParserGA\bin\Debug\logParserGA.exe.config
+c:\users\schke\documents\visual studio 2013\Projects\logParserGA\logParserGA\bin\Debug\logParserGA.exe
+c:\users\schke\documents\visual studio 2013\Projects\logParserGA\logParserGA\bin\Debug\logParserGA.pdb
+c:\users\schke\documents\visual studio 2013\Projects\logParserGA\logParserGA\obj\Debug\logParserGA.exe
+c:\users\schke\documents\visual studio 2013\Projects\logParserGA\logParserGA\obj\Debug\logParserGA.pdb
+C:\Users\schke\Documents\Visual Studio 2013\Projects\logParserGA\logParserGA\obj\Debug\logParserGA.csprojResolveAssemblyReference.cache
+Y:\logParserGA\logParserGA\bin\Debug\logParserGA.exe.config
+Y:\logParserGA\logParserGA\obj\Debug\logParserGA.exe
+Y:\logParserGA\logParserGA\obj\Debug\logParserGA.pdb
+Y:\logParserGA\logParserGA\bin\Debug\logParserGA.exe
+Y:\logParserGA\logParserGA\bin\Debug\logParserGA.pdb
+C:\SVN\logParserGA\logParserGA\bin\Debug\logParserGA.exe.config
+C:\SVN\logParserGA\logParserGA\obj\Debug\logParserGA.exe
+C:\SVN\logParserGA\logParserGA\obj\Debug\logParserGA.pdb
+C:\SVN\logParserGA\logParserGA\bin\Debug\logParserGA.exe
+C:\SVN\logParserGA\logParserGA\bin\Debug\logParserGA.pdb
+C:\SVN\logParserGA\logParserGA\obj\Debug\logParserGA.csprojResolveAssemblyReference.cache
+Y:\logParserGA\logParserGA\obj\Debug\logParserGA.csprojResolveAssemblyReference.cache

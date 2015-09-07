@@ -1,0 +1,7 @@
+--> Objekt Author M1lkman & SmokeDog
+
+|logErr=Unknown entity: &apos; Smokedog&lt;/t&gt;&lt;br/&gt;
+n=&apos;center&apos; color=&apos;#666c3f&apos; shadow=&apos;1&apos; shadowColor=&apos;#000000&apos;&gt;@PRKZ&lt;/t&gt;&lt;br/&gt;
+n=&apos;center&apos; color=&apos;#666c3f&apos; shadow=&apos;1&apos; shadowColor=&apos;#000000&apos;&gt;Building&lt;/t&gt;
+|Classname=Land_jbad_Wall_L1_2m5
+|ModBase=PRKZ
