@@ -22,9 +22,9 @@ _objType = getText(configFile >> "CfgVehicles" >> _objClass >> "vehicleClass");
 _enableSimulation = (_objType == "Flag");
 
 _displayName = getText(configFile >> "CfgVehicles" >> _objClass >> "displayName");
-_displayName = [_displayName,"&","&amp;"] call CBA_fnc_replace;
+_displayName = [_displayName,"&","&amp;"] call FNC_REPLACE;
 _author = getText(configFile >> "CfgVehicles" >> _objClass >> "author");
-_author = [_author,"&","&amp;"] call CBA_fnc_replace;
+_author = [_author,"&","&amp;"] call FNC_REPLACE;
 
 _bIsWeapon = (_objType in ['WeaponsPrimary','WeaponsSecondary','WeaponsHandgun']);
 _bIsBackpack = (_objType == 'Backpacks');

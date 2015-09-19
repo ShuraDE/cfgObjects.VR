@@ -6,12 +6,14 @@ FNC_SCR_CAP = compile preprocessFileLineNumbers "fnc_makeScreen.sqf";
 FNC_SHOW_BOUNDINGBOX = compile preprocessFileLineNumbers "fnc_showBoundingBox.sqf";
 FNC_ROTATE = compile preprocessFileLineNumbers "fnc_rotate.sqf";
 
+FNC_REPLACE = compile preprocessFileLineNumbers "fnc_replace.sqf";
+
 ADL_CLEAN_UP = compile preprocessFileLineNumbers "fnc_cleanUp.sqf";
 ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";
 
 ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 
-PIC_PATH = "D:\Users\Shura\Pictures\arma\";
+PIC_PATH = "C:\Users\Shura\Documents\Arma 3\scrcap\cfgConfig\vanilla\";
 PIC_EXT = ".png";
 
 //default distance

@@ -199,8 +199,8 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
            try {
              //take screen shoot if enabled
              if (ENABLE_SCREEN) then {
-               sleep 0.5;
-               _scrFile = [_class] call FNC_SCR_CAP;
+               sleep 0.3;
+               _scrFile = [_class,_mod] call FNC_SCR_CAP;
                _scr = true;
              };
              [_scrFile, "exp_scr"]  call ADL_DEBUG;
