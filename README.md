@@ -1,9 +1,17 @@
 # cfgObjects.VR
-
-requirement: http://killzonekid.com/arma-extension-scr_cap-dll-screen-capture/
-
-logParserGA.exe is optional, parse data from log and create a objlist textfile, objectdata xmlfile, wikiimports xmlfile
-
-hardcoded in init.sqf (todo parameter): 
+<br/>
+requirement: http://killzonekid.com/arma-extension-scr_cap-dll-screen-capture/<br/>
+<br/>
+optional:<br/>
+<br/>
+cfg_logParser => parse data from log and create a objlist textfile, objectdata xmlfile, wikiimports xmlfile<br/>
+https://github.com/ShuraDE/cfg_logParser<br/>
+<br/>
+cfg_web => Webviewer (in dev)<br/>
+https://github.com/ShuraDE/cfg_web<br/>
+<br/>
+<br/>
+todo:<br/>
+hardcoded in init.sqf (todo parameter): <br/>
 * path to picture directory
 * some settings  
