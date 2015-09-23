@@ -18,7 +18,7 @@ PIC_EXT = ".png";
 
 //default distance
 //PLAYER_DEFAULT_DIST = 10;
- 
+
 //exit after count
 DEBUG_EXIT = false;
 DEBUG_COUNT = 5;
