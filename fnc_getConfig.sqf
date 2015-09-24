@@ -41,13 +41,13 @@ _cfg_test = "(
 )" configClasses (configFile >> "CfgVehicles");
 
 //mod basiert
-_cfg_mod = "(
+_cfg = "(
  (getNumber (_x >> 'scope') >= 2) &&
  {configSourceMod(_x) in ['@RHSAFRF','@RHSUSF','@Leights_OPFOR']}
 )" configClasses (configFile >> "CfgVehicles");
 
 //alle daten inkl. evtl. nicht möglichen
-_cfg = "(
+_cfg_all = "(
   (getNumber (_x >> 'scope') >= 2)
 )" configClasses (configFile >> "CfgVehicles");
 
