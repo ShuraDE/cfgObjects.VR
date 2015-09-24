@@ -11,6 +11,8 @@ cfg_web => Webviewer (in dev)<br/>
 https://github.com/ShuraDE/cfg_web<br/>
 <br/>
 <br/>
+http://wiki.gruppe-adler.de/index.php?title=Intern:ArmA_object_libary
+<br/>
 todo:<br/>
 hardcoded in init.sqf (todo parameter): <br/>
 * path to picture directory
