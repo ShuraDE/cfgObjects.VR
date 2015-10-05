@@ -34,7 +34,8 @@ _setupVector =  {
   _dir = _this select 1;
   _angle_corr = _this select 2;
 
-  _heightDiff =  (getPosASl _turnObj select 2)-((_turnObj modelToWorld [0,0,0]) select 2);
+  //_heightDiff =  ((getPosASl _turnObj select 2) + 1.71433) - ((_turnObj modelToWorld [0,0,0]) select 2); //+eye offset
+  _heightDiff =  ((getPosASl player select 2)- 1.71433) - ((getPosASl _turnObj select 2) min ((_turnObj modelToWorld [0,0,0]) select 2));
   _dist = _turnObj distance2D player;
 
   _angle = (_heightDiff atan2 _dist);
@@ -102,7 +103,7 @@ hint parseText format ["
      getText(configFile >> "CfgVehicles" >> _objClass >> "icon"),
      _objType,
      getText(configFile >> "CfgVehicles" >> _objClass >> "faction"),
-     getText(configFile >> "CfgVehicles" >> _objClass >> "author"),
+     _author,
      _mod,
      _parentClass];
 
@@ -153,7 +154,7 @@ try {
 
   //upper objects
   //upper base line
-  _z = (_zOffSet + (_worldHeight max _worldLength)) max 1; //for flip check height and length, min 1 up
+  _z = (_zOffSet + (_maxHeight max _maxLength)) max 1; //for flip check height and length, min 1 up
 
   if (!(_bIsWeapon || _bIsBackpack))  then {
     //side view upper right corner
@@ -182,7 +183,7 @@ try {
     [[[_obj,6]]] execVM "fnc_drawChart.sqf";
   } else {
     //topdown view upper center
-    _obj_td = createVehicle [_objClass, [0, 0, _z], [], 0, "CAN_COLLIDE"];
+    _obj_td = createVehicle [_objClass, [0, 0, (_z + (_maxWidth / 2))], [], 0, "CAN_COLLIDE"];
     _obj_td attachTo [_obj, _obj worldToModel [0, 0,_z + ((getPosASL _obj)  select 2)]];
     _obj_td enableSimulation false;
     _obj_td setPosASL [0,0, ((getPosASL _obj_lu) select 2)];

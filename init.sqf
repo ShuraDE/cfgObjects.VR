@@ -13,7 +13,7 @@ ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";
 
 ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 
-PIC_PATH = "C:\Users\Shura\Documents\Arma 3\scrcap\cfgConfig\vanilla\";
+PIC_PATH = "C:\Users\Shura\Pictures\cfgConfig\";
 PIC_EXT = ".png";
 
 //default distance

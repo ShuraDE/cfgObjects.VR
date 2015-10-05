@@ -43,7 +43,7 @@ _cfg_test = "(
 //mod basiert
 _cfg = "(
  (getNumber (_x >> 'scope') >= 2) &&
- {configSourceMod(_x) in ['@RHSAFRF','@RHSUSF','@Leights_OPFOR']}
+ {configSourceMod(_x) in ['@SMA']}
 )" configClasses (configFile >> "CfgVehicles");
 
 //alle daten inkl. evtl. nicht möglichen
