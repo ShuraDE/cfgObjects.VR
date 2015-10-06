@@ -34,8 +34,8 @@ _setupVector =  {
   _dir = _this select 1;
   _angle_corr = _this select 2;
 
-  //_heightDiff =  ((getPosASl _turnObj select 2) + 1.71433) - ((_turnObj modelToWorld [0,0,0]) select 2); //+eye offset
-  _heightDiff =  ((getPosASl player select 2)- 1.71433) - ((getPosASl _turnObj select 2) min ((_turnObj modelToWorld [0,0,0]) select 2));
+  _heightDiff =  (getPosASl _turnObj select 2) - ((_turnObj modelToWorld [0,0,0]) select 2); 
+  //_heightDiff =  ((getPosASl player select 2)- 1.71433) - ((getPosASl _turnObj select 2) min ((_turnObj modelToWorld [0,0,0]) select 2));
   _dist = _turnObj distance2D player;
 
   _angle = (_heightDiff atan2 _dist);
