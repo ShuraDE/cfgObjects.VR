@@ -1,3 +1,4 @@
+private ["_cfg"];
 /*
 * name (is klar)
 * source / enthalten in mod x
@@ -16,8 +17,6 @@ https://community.bistudio.com/wiki/CfgVehicles_Config_Reference
 configProperties [configFile >> "CfgVehicles" >> "O_Truck_02_box_F"];
 */
 
-//turn off environment
-enableEnvironment false;
 _scr = false;
 
 //scope == 0 private, 1 internal/protected, 2 public
@@ -40,21 +39,27 @@ _cfg_test = "(
     {getText (_x >> 'vehicleClass') in ['WeaponsSecondary']}
 )" configClasses (configFile >> "CfgVehicles");
 
-//mod basiert
-_cfg = "(
- (getNumber (_x >> 'scope') >= 2) &&
- {configSourceMod(_x) in ['@xCam','@inidbi']}
-)" configClasses (configFile >> "CfgVehicles");
 
-//alle daten inkl. evtl. nicht möglichen
-_cfg_all = "(
-  (getNumber (_x >> 'scope') >= 2)
-)" configClasses (configFile >> "CfgVehicles");
+if (GET_CONFIG_BY_MOD) then {
+  //mod basiert
+  _cfg = "(
+   (getNumber (_x >> 'scope') >= 2) &&
+   {configSourceMod(_x) in ACTIVE_MODLIST}
+  )" configClasses (configFile >> "CfgVehicles");
+} else {
+  //alle daten inkl. evtl. nicht möglichen
+  _cfg = "(
+    (getNumber (_x >> 'scope') >= 2)
+  )" configClasses (configFile >> "CfgVehicles");
+};
+
+
+
 
 _cfgExcludeArray = [] call ADL_EXCLUDE;
 _cfgSkippedObjects = [];
 
-[format["Found %1 Objects",count(_cfg)]] call ADL_DEBUG;
+[format["Found %1 cfgVehicle Objects",count(_cfg)]] call ADL_DEBUG;
 
 ["Export Data:"] call ADL_DEBUG;
 ["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,parent,timeToLive,mod_folder,allParents]", "def_001"] call ADL_DEBUG;
@@ -125,6 +130,8 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _transportMaxWeapons = getNumber((_cfg select _i) >> "transportMaxWeapons");
     _transportMaxBackpacks = getNumber((_cfg select _i) >> "transportMaxBackpacks");
 
+
+
     _fuelCap = getNumber((_cfg select _i) >> "fuelCapacity");
     _armour = getNumber((_cfg select _i) >> "armor");
     _audible = getNumber((_cfg select _i) >> "audible");
@@ -137,12 +144,41 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _hiddenSel = getArray((_cfg select _i) >> "hiddenSelections");
     _hiddelSelTex = getArray((_cfg select _i) >> "hiddenSelectionsTextures");
 
+    //for infantry
+    _uniformClass = getText((_cfg select _i) >> "uniformClass");
+    _linkedItems = getArray((_cfg select _i) >> "linkedItems");
+    _respawnLinkedItems = getArray((_cfg select _i) >> "respawnLinkedItems");
+    _backpack = getText((_cfg select _i) >> "backpack");
+    _identityTypes = getArray((_cfg select _i) >> "identityTypes");
+
+    //content of boxes/vest/backpack etc....
+    //([(configfile >> "CfgVehicles" >> "ARC_GER_Backpack_Flecktarn_Med" >> "TransportItems"), 0, false] call BIS_fnc_returnChildren)
+    _TransportMagazinesConfig = [((_cfg select _i) >> "TransportMagazines"),0, false ] call BIS_fnc_returnChildren;
+    _TransportWeaponsConfig = [((_cfg select _i) >> "TransportWeapons"),0, false ] call BIS_fnc_returnChildren;
+    _TransportItemsConfig = [((_cfg select _i) >> "TransportItems"),0, false ] call BIS_fnc_returnChildren;
+
+    local _TransportMagazines = [];
+    local _TransportWeapons = [];
+    local _TransportItems = [];
+
+    for[{_x = 1}, {_x < count(_TransportWeaponsConfig)}, {_x=_x+1}] do {
+      _TransportWeapons pushBack ([getText((_TransportWeaponsConfig select _x) >> "name"), getNumber((_TransportWeaponsConfig select _x) >> "count")]);
+    };
+    for[{_x = 1}, {_x < count(_TransportMagazinesConfig)}, {_x=_x+1}] do {
+      _TransportMagazines pushBack ([getText((_TransportMagazinesConfig select _x) >> "name"), getNumber((__TransportMagazinesConfig select _x) >> "count")]);
+    };
+    for[{_x = 1}, {_x < count(_TransportItemsConfig)}, {_x=_x+1}] do {
+      _TransportItems pushBack ([getText((_TransportItemsConfig select _x) >> "name"), getNumber((_TransportItemsConfig select _x) >> "count")]);
+    };
+
+
     // for vehicles general
     _armorStructural =  getNumber((_cfg select _i) >> "armorStructural"); //= 1;	// ranges between 1 and 4.0, default 1
     _armorFuel =  getNumber((_cfg select _i) >> "armorFuel"); // = 1.4;	// default
     _armorGlass =  getNumber((_cfg select _i) >> "armorGlass"); // = 0.5;	// default
     _armorLights =  getNumber((_cfg select _i) >> "armorLights"); // = 0.4;	// default 0.4 in all models.
     _armorWheels =  getNumber((_cfg select _i) >> "armorWheels"); // = 0.05;	// default
+    _mass =  getNumber((_cfg select _i) >> "mass");
     // for tanks
     _armorHull =  getNumber((_cfg select _i) >> "armorHull"); // = 1;
     _armorTurret =  getNumber((_cfg select _i) >> "armorTurret"); // = 0.8;
@@ -162,9 +198,13 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
     _dataBase = [_class,_genMac,_type,_description,_roles,_weapons,_magazines,_type2,_filter,_side,_model,_parent,_ttl,_mod, _allParents];
 
-    _dataExtend = [_faction,_crew,_picture,_icon,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author];
+    _dataExtend = [_faction,_crew,_picture,_icon,_slingLoadCargoMemoryPoints,_crewCrashProtection,_crewExplosionProtection,_numberPhysicalWheels,_tracksSpeed,_CommanderOptics,_maxGForce,_fireResistance,_airCapacity,_tf_hasLRradio,_author, _mass];
+
+    _dataInfantry = [_uniformClass,_linkedItems,_respawnLinkedItems,_backpack,_identityTypes];
 
     _dataTransport = [_cargoCoDriver,_transportSoldier,_transportVehicle,_transportAmmo,_transportFuel,_transportRepair,_maximumLoad,_transportMaxMagazines,_transportMaxWeapons,_transportMaxBackpacks];
+
+    _dataTransportContent = [_TransportWeapons, _TransportMagazines, _TransportItems];
 
     _dataVehicle = [_fuelCap,_armour,_audible,_accuracy,_camouflage,_accerleration,_breakDist,_maxSpeed,_minSpeed,_hiddenSel,_hiddelSelTex];
 
@@ -177,11 +217,14 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     */
 
     [str(_i),"exp_idx"] call ADL_DEBUG;
-    [_dataBase, "exp_001"] call ADL_DEBUG;
-    [_dataExtend, "exp_002"] call ADL_DEBUG;
-    [_dataTransport, "exp_003"] call ADL_DEBUG;
-    [_dataVehicle, "exp_004"] call ADL_DEBUG;
-    [_dataArmor, "exp_005"] call ADL_DEBUG;
+    [_dataBase, "exp_V01"] call ADL_DEBUG;
+    [_dataExtend, "exp_V02"] call ADL_DEBUG;
+    [_dataTransport, "exp_V03"] call ADL_DEBUG;
+    [_dataVehicle, "exp_V04"] call ADL_DEBUG;
+    [_dataArmor, "exp_V05"] call ADL_DEBUG;
+    [_dataInfantry, "exp_V06"] call ADL_DEBUG;
+    [_dataTransportContent, "exp_V07"] call ADL_DEBUG;
+
 
     if (_class != "" && _type != "" && _description != "") then {
       try {
@@ -192,7 +235,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
         _sizes = _objSpawn select 1;
         _parentClass = _objSpawn select 2;
 
-        [[_sizes select 0, _sizes select 1, _sizes select 2, _sizes select 3, _parentClass], "exp_006"] call ADL_DEBUG;
+        [[_sizes select 0, _sizes select 1, _sizes select 2, _sizes select 3, _parentClass], "exp_V08"] call ADL_DEBUG;
 
         _scrFile = "";
         if (!isNil("_veh") && (typeName _veh == "OBJECT") && (!(_veh isKindOf "Logic")) && (alive _veh)) then {

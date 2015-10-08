@@ -10,7 +10,7 @@ FNC_REPLACE = compile preprocessFileLineNumbers "fnc_replace.sqf";
 
 ADL_CLEAN_UP = compile preprocessFileLineNumbers "fnc_cleanUp.sqf";
 ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";
-
+ADL_SPAWN_MAN = compile preprocessFileLineNumbers "fnc_spawnMan.sqf";
 ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 
 PIC_PATH = "C:\Users\Shura\Pictures\cfgConfig\";
@@ -20,8 +20,8 @@ PIC_EXT = ".png";
 //PLAYER_DEFAULT_DIST = 10;
 
 //exit after count
-DEBUG_EXIT = false;
-DEBUG_COUNT = 5;
+DEBUG_EXIT = true;
+DEBUG_COUNT = 25;
 
 //enable screen shots
 ENABLE_SCREEN = true;
@@ -29,12 +29,20 @@ ENABLE_SCREEN = true;
 //exclude objects from array in "exclude_classes.sqf"
 EXCLUDE_OBJECTS = false;
 
+//only mods ? which modfolder(s) named like installed
+GET_CONFIG_BY_MOD = true;
+ACTIVE_MODLIST =  ['@arc_gerup'];
+
+
+//turn off environment
+enableEnvironment false;
+
 waitUntil {!isNil "bis_fnc_init"};
 removeAllWeapons player;
 //showHUD false; //stance wird noch immer gezeigt
 sleep (3);
 
-setWind [-25, 0, true];
+setWind [-25, 0, true]; //for flags
 0 setWindDir 270;
 
 player allowDamage false;
@@ -43,4 +51,11 @@ player enableSimulation false;
 //wait until tfar
 sleep 5;
 
-[] spawn compile preprocessFileLineNumbers "fnc_getConfig.sqf";
+/*
+//cfgVehicle
+script_handler = [] spawn compile preprocessFileLineNumbers "fnc_getConfigVehicle.sqf";
+waitUntil { scriptDone script_handler };
+*/
+//cfgWeapons
+script_handler = [] spawn compile preprocessFileLineNumbers "fnc_getConfigWeapon.sqf";
+waitUntil { scriptDone script_handler };
