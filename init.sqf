@@ -16,23 +16,21 @@ ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 PIC_PATH = "C:\Users\Shura\Pictures\cfgConfig\";
 PIC_EXT = ".png";
 
-//default distance
-//PLAYER_DEFAULT_DIST = 10;
+GEN_cfgVehicles = false;
+GEN_cfgWeapons = true;
 
-//exit after count
-DEBUG_EXIT = true;
-DEBUG_COUNT = 25;
-
+//only mods ? which modfolder(s) named like installed
+GET_CONFIG_BY_MOD = true;
+ACTIVE_MODLIST =  ['@RHSUSF'];
 //enable screen shots
 ENABLE_SCREEN = true;
 
 //exclude objects from array in "exclude_classes.sqf"
 EXCLUDE_OBJECTS = false;
 
-//only mods ? which modfolder(s) named like installed
-GET_CONFIG_BY_MOD = true;
-ACTIVE_MODLIST =  ['@arc_gerup'];
-
+//exit after count
+DEBUG_EXIT = false;
+DEBUG_COUNT = 25;
 
 //turn off environment
 enableEnvironment false;
@@ -51,11 +49,13 @@ player enableSimulation false;
 //wait until tfar
 sleep 5;
 
-/*
-//cfgVehicle
-script_handler = [] spawn compile preprocessFileLineNumbers "fnc_getConfigVehicle.sqf";
-waitUntil { scriptDone script_handler };
-*/
-//cfgWeapons
-script_handler = [] spawn compile preprocessFileLineNumbers "fnc_getConfigWeapon.sqf";
-waitUntil { scriptDone script_handler };
+if (GEN_cfgVehicles) then {
+  //cfgVehicle
+  script_handler = [] spawn compile preprocessFileLineNumbers "fnc_getConfigVehicle.sqf";
+  waitUntil { scriptDone script_handler };
+};
+if (GEN_cfgWeapons) then {
+  //cfgWeapons
+  script_handler = [] spawn compile preprocessFileLineNumbers "fnc_getConfigWeapon.sqf";
+  waitUntil { scriptDone script_handler };
+};
