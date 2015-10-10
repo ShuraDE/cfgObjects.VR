@@ -215,10 +215,10 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     <t align='center' color='#666666'>------------------------------</t><br/><br/>
     <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%2</t><br/>
     <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'><img size='4' image='%3'/></t><br/>
-    <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%4</t><br/>
-    <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%5</t><br/>
-    <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%6</t><br/>
-    <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t><br/>
+    <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%4</t><br/>
+    <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%5</t><br/>
+    <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%6</t><br/>
+    <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t><br/>
     ",
        _displayName,
        _class,
