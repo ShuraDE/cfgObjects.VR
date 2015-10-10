@@ -4,6 +4,7 @@ _holder_md = createVehicle ["GroundWeaponHolder", [0,0.1,0.5], [], 0, "CAN_COLLI
 _holder_rd = createVehicle ["GroundWeaponHolder", [0.5,0.2,0.2], [], 0, "CAN_COLLIDE"];
 _holder_ld = createVehicle ["GroundWeaponHolder", [-0.3,-0.3,0.5], [], 0, "CAN_COLLIDE"];
 
+
 _holder_md setDir 180;
 
 [_holder_rd,90,0,90] call FNC_ROTATE_SIMPLE;

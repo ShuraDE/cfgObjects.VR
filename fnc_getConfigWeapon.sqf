@@ -49,17 +49,24 @@ _prepareMAN = {
 _prepareWHolder = {
   _isEquip = false;
   _isWeapon = true;
-  _showObject = [] call ADL_SPAWN_WHOLDER;
+  _showObject = [] call ADL_SPAWN_MAN_WHOLDER; //ADL_SPAWN_WHOLDER;
 
   switch (_this select 0) do {
-    case 1: { //primaryWeapon
+    case 1; //primaryWeapon
+    case 2; //secondaryWeapon
+    case 3: { //pistol
       {
-        _x addWeaponCargoGlobal [ (_this select 1), 1]
-      } forEach _showObject;
-    };
-    case 2: { //secondaryWeapon
-      {
-        _x addWeaponCargoGlobal [ (_this select 1), 1]
+        if ("GroundWeaponHolder" == typeOf _x) then {
+          _x addWeaponCargoGlobal [ (_this select 1), 1];   //weaponholder
+        } else {
+          _x addWeapon (_this select 1);
+          switch (_this select 0) do {
+            case 2: { _x selectWeapon (secondaryWeapon _x); };
+            case 3: {_x selectWeapon (handgunWeapon _x); };
+          };
+          _x doTarget temp_target;
+          _x forceWeaponFire [currentWeapon _x, (getArray (configFile >> "cfgWeapons" >> (_this select 1) >> "modes")) select 0];
+        };
       } forEach _showObject;
     };
   };
@@ -100,6 +107,9 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   };
   if ("LauncherCore" in _allParents) then {
     [2,_class] call _prepareWHolder;
+  };
+  if ("PistolCore" in _allParents) then {
+    [3,_class] call _prepareWHolder;
   };
 
 

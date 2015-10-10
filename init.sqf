@@ -13,6 +13,7 @@ ADL_CLEAN_UP = compile preprocessFileLineNumbers "fnc_cleanUp.sqf";
 ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";
 ADL_SPAWN_MAN = compile preprocessFileLineNumbers "fnc_spawnMan.sqf";
 ADL_SPAWN_WHOLDER = compile preprocessFileLineNumbers "fnc_spawnWHolder.sqf";
+ADL_SPAWN_MAN_WHOLDER = compile preprocessFileLineNumbers "fnc_spawnManAndWHolder.sqf";
 ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 
 PIC_PATH = "C:\Users\Shura\Pictures\cfgConfig\";
