@@ -1,4 +1,4 @@
-private ["_cfg"];
+private ["_cfg","_isEquip","_isWeapon", "_showObject"];
 
 if (GET_CONFIG_BY_MOD) then {
   //mod basiert
@@ -21,12 +21,57 @@ if (GET_CONFIG_BY_MOD) then {
 //  containerclass = "Supply80";
 //UNIFORM   ["ARC_GER_Flecktarn_Uniform_Light","Uniform_Base","ItemCore","Default"]
 
-_allMan = [] call ADL_SPAWN_MAN;
+_prepareMAN = {
+  _isEquip = true;
+  _isWeapon = false;
+  _showObject = [] call ADL_SPAWN_MAN;
+
+  switch (_this select 0) do {
+    case 1: { //uniform
+      {
+          _x forceAddUniform (_this select 1);
+      } forEach _showObject;
+    };
+    case 2: { //vest
+      {
+          _x addVest (_this select 1);
+      } forEach _showObject;
+    };
+    case 3: { //helmet
+      {
+          _x addHeadgear (_this select 1);
+      } forEach _showObject;
+      player setPosASL [0.0855641,-1.4,5.2];
+    };
+  }
+
+};
+_prepareWHolder = {
+  _isEquip = false;
+  _isWeapon = true;
+  _showObject = [] call ADL_SPAWN_WHOLDER;
+
+  switch (_this select 0) do {
+    case 1: { //primaryWeapon
+      {
+        _x addWeaponCargoGlobal [ (_this select 1), 1]
+      } forEach _showObject;
+    };
+    case 2: { //secondaryWeapon
+      {
+        _x addWeaponCargoGlobal [ (_this select 1), 1]
+      } forEach _showObject;
+    };
+  };
+};
+
+
 //https://community.bistudio.com/wiki/Arma_3_Characters_And_Gear_Encoding_Guide#Vest_configuration
 //https://community.bistudio.com/wiki/Arma_3_Weapon_Config_Guidelines
 
 for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 {
+  [] call ADL_CLEAN_UP;
   _hint_txt_4 = "unknown";
   _hint_txt_5 = "unknown";
   _hint_txt_6 = "unknown";
@@ -34,54 +79,27 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _isEquip = false;
   _isWeapon = false;
 
-  //default pos (diff only helmet)
+  //default pos, diff in section helmet
   player setPosASL [0.0855641,-1.7,4.2];
-
-  {
-    removeAllWeapons _x;
-    removeAllItems _x;
-    removeAllAssignedItems _x;
-    removeUniform _x;
-    removeVest _x;
-    removeBackpack _x;
-    removeHeadgear _x;
-  } forEach _allMan;
 
   _class = configName(_cfg select _i);
 
   _allParents = [(configFile >> "CfgWeapons" >> _class), true] call BIS_fnc_returnParents;
   //UNIFORM
   if ("Uniform_Base" in _allParents) then {
-    _isEquip = true;
-    {
-        _x forceAddUniform _class;
-    } forEach _allMan;
+    [1,_class] call _prepareMAN;
   };
   if (count (_allParents - ["Vest_NoCamo_Base","Vest_Camo_Base"]) < count _allParents) then {
-    _isEquip = true;
-    {
-        _x addVest _class;
-    } forEach _allMan;
+    [2,_class] call _prepareMAN;
   };
   if (count (_allParents - ["H_HelmetIA","H_HelmetB","H_HelmetB_paint","H_HelmetB_light"]) < count _allParents) then {
-    _isEquip = true;
-    {
-        _x addHeadgear _class;
-    } forEach _allMan;
-    player setPosASL [0.0855641,-1.4,5.2];
+    [3,_class] call _prepareMAN;
   };
   if ("RifleCore" in _allParents) then {
-    _isWeapon = true;
-    {
-        _x addWeapon _class;
-    } forEach _allMan;
+    [1,_class] call _prepareWHolder;
   };
   if ("LauncherCore" in _allParents) then {
-    _isWeapon = true;
-    {
-        _x addWeapon "FakeWeapon";
-        _x addWeapon _class;
-    } forEach _allMan;
+    [2,_class] call _prepareWHolder;
   };
 
 
@@ -181,15 +199,15 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
 
   if (_isEquip) then {
-    _hint_txt_4 = str _ItemInfo_armor + "/" + str _ItemInfo_passthrough;
-    _hint_txt_5 = _containerClass;
-    _hint_txt_6 = str _ItemInfo_mass;
+    _hint_txt_4 = "Protection: " + str _ItemInfo_armor + "/" + str _ItemInfo_passthrough;
+    _hint_txt_5 = "Container: " + _containerClass;
+    _hint_txt_6 = "Mass : " + str _ItemInfo_mass;
   };
 
   if (_isWeapon) then {
-    _hint_txt_4 = str _minRange + " - " + str _midRange + " - " + str _maxRange;
-    _hint_txt_5 = str _modes;
-    _hint_txt_6 = str _WeaponSlotsInfo_mass;
+    _hint_txt_4 = "Range: " + str _minRange + " - " + str _midRange + " - " + str _maxRange;
+    _hint_txt_5 = "Modes: " + str _modes;
+    _hint_txt_6 = "Mass: " + str _WeaponSlotsInfo_mass;
   };
 
   hint parseText format ["
@@ -202,13 +220,13 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%6</t><br/>
     <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t><br/>
     ",
-       _class,
        _displayName,
+       _class,
        getText(configFile >> "CfgWeapons" >> _class >> "picture"),
        _hint_txt_4,
        _hint_txt_5,
        _hint_txt_6,
-       _mod];
+       "Mod: " + _mod];
 
 
 

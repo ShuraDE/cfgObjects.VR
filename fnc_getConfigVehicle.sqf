@@ -62,19 +62,19 @@ _cfgSkippedObjects = [];
 [format["Found %1 cfgVehicle Objects",count(_cfg)]] call ADL_DEBUG;
 
 ["Export Data:"] call ADL_DEBUG;
-["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,parent,timeToLive,mod_folder,allParents]", "def_001"] call ADL_DEBUG;
+["[className,_generalMacro,vehicleClass,displayName,[availableForSupportTypes],[weapons],[magazines],textSingular,[BASE],side,model,parent,timeToLive,mod_folder,allParents]", "def_V01"] call ADL_DEBUG;
 
-["[faction,crew,picture,icon,slingLoadCargoMemoryPoints,crewCrashProtection,crewExplosionProtection,numberPhysicalWheels,tracksSpeed,CommanderOptics,maxGForce,fireResistance,airCapacity,tf_hasLRradio,author]", "def_002"] call ADL_DEBUG;
+["[faction,crew,picture,icon,slingLoadCargoMemoryPoints,crewCrashProtection,crewExplosionProtection,numberPhysicalWheels,tracksSpeed,CommanderOptics,maxGForce,fireResistance,airCapacity,tf_hasLRradio,author]", "def_V02"] call ADL_DEBUG;
 
-["[[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks]", "def_003"] call ADL_DEBUG;
+["[[cargoIsCoDriver],transportSoldier,transportVehicleCount,transportAmmo,transportFuel,transportRepair,maximumLoad,transportMaxMagazines,transportMaxWeapons,transportMaxBackpacks]", "def_V03"] call ADL_DEBUG;
 
-["[fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures]]", "def_004"] call ADL_DEBUG;
+["[fuelCapacity,armor,audible,accuracy,camouflage,accerleration,brakeDistance,maxSpeed,minSpeed,[hiddenSelections],[hiddenSelectionsTextures]]", "def_V04"] call ADL_DEBUG;
 
-["[armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorAvionics,armorVRotor,armorHRotor,armorMissiles]","def_005"] call ADL_DEBUG;
+["[armorStructural,armorFuel,armorGlass,armorLights,armorWheels,armorHull,armorTurret,armorGun,armorEngine,armorTracks,armorHead,armorHands,armorLegs,armorAvionics,armorVRotor,armorHRotor,armorMissiles]","def_V05"] call ADL_DEBUG;
 
-["[[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight],[bbox_p1, bbox_p2], parentClassHira]","def_006"] call ADL_DEBUG;
+["[[_maxWidth,_maxLength,_maxHeight],[_radius2D,_radius3D],[_worldWidth,_worldLength,_worldHeight],[bbox_p1, bbox_p2], parentClassHira]","def_V06"] call ADL_DEBUG;
 
-["_scrshot_file","exp_scr"] call ADL_DEBUG;
+["_scrshot_file","exp_Vscr"] call ADL_DEBUG;
 
 for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 {

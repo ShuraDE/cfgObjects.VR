@@ -5,12 +5,14 @@ ADL_PL_POS = compile preprocessFileLineNumbers "fnc_setPlayerPos.sqf";
 FNC_SCR_CAP = compile preprocessFileLineNumbers "fnc_makeScreen.sqf";
 FNC_SHOW_BOUNDINGBOX = compile preprocessFileLineNumbers "fnc_showBoundingBox.sqf";
 FNC_ROTATE = compile preprocessFileLineNumbers "fnc_rotate.sqf";
+FNC_ROTATE_SIMPLE = compile preprocessFileLineNumbers "fnc_rotate_simple.sqf";
 
 FNC_REPLACE = compile preprocessFileLineNumbers "fnc_replace.sqf";
 
 ADL_CLEAN_UP = compile preprocessFileLineNumbers "fnc_cleanUp.sqf";
 ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";
 ADL_SPAWN_MAN = compile preprocessFileLineNumbers "fnc_spawnMan.sqf";
+ADL_SPAWN_WHOLDER = compile preprocessFileLineNumbers "fnc_spawnWHolder.sqf";
 ADL_EXCLUDE = compile preprocessFileLineNumbers "exclude_classes.sqf";
 
 PIC_PATH = "C:\Users\Shura\Pictures\cfgConfig\";
