@@ -1,4 +1,4 @@
-private ["_cfg","_isEquip","_isWeapon", "_showObject"];
+private ["_cfg","_isEquip","_isWeapon", "_showObject","_magazines","_cargoVolume"];
 
 if (GET_CONFIG_BY_MOD) then {
   //mod basiert
@@ -21,6 +21,35 @@ if (GET_CONFIG_BY_MOD) then {
 //  containerclass = "Supply80";
 //UNIFORM   ["ARC_GER_Flecktarn_Uniform_Light","Uniform_Base","ItemCore","Default"]
 
+_checkCargoSize = {
+["carg"] call ADL_DEBUG;
+  _uniform = ((_this select 0) == 1);
+  _cargoVolume = 0;
+
+
+["_uniform"] call ADL_DEBUG;
+  while {true} do {
+    if (_uniform) then {
+      (_this select 1) addItemToUniform "ItemMap";
+      ["add map uni"] call ADL_DEBUG;
+    } else {
+      (_this select 1) addItemToVest "ItemMap";
+      ["add map vest"] call ADL_DEBUG;
+    };
+
+    _cargoVolume = _cargoVolume + 1;
+    if (_cargoVolume > ({_x == "ItemMap"} count (items (_this select 1)))) exitWith { true; };
+  };
+  /*
+  _unit addItemToUniform "HandGrenade";
+  _unit addItemToVest "HandGrenade";
+  _unit addItemToBackpack  "HandGrenade";
+  if (_cn < ({_x == "HandGrenade"} count (magazines _unit))) exitWith { true; };
+  */
+  _cargoVolume = _cargoVolume - 1;
+  _cargoVolume;
+};
+
 _prepareMAN = {
   _isEquip = true;
   _isWeapon = false;
@@ -31,11 +60,13 @@ _prepareMAN = {
       {
           _x forceAddUniform (_this select 1);
       } forEach _showObject;
+      [1,_showObject select 0] call _checkCargoSize;
     };
     case 2: { //vest
       {
           _x addVest (_this select 1);
       } forEach _showObject;
+      [2,_showObject select 0] call _checkCargoSize;
     };
     case 3: { //helmet
       {
@@ -43,8 +74,7 @@ _prepareMAN = {
       } forEach _showObject;
       player setPosASL [0.0855641,-1.4,5.2];
     };
-  }
-
+  };
 };
 _prepareWHolder = {
   _isEquip = false;
@@ -59,6 +89,8 @@ _prepareWHolder = {
         if ("GroundWeaponHolder" == typeOf _x) then {
           _x addWeaponCargoGlobal [ (_this select 1), 1];   //weaponholder
         } else {
+          _x forceAddUniform "U_C_Scientist";
+          _x addItemToUniform (_magazines select 0);
           _x addWeapon (_this select 1);
           switch (_this select 0) do {
             case 2: { _x selectWeapon (secondaryWeapon _x); };
@@ -82,7 +114,9 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _hint_txt_4 = "unknown";
   _hint_txt_5 = "unknown";
   _hint_txt_6 = "unknown";
+  _hint_txt_7 = "unknown";
 
+  _cargoVolume = 0;
   _isEquip = false;
   _isWeapon = false;
 
@@ -92,27 +126,6 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _class = configName(_cfg select _i);
 
   _allParents = [(configFile >> "CfgWeapons" >> _class), true] call BIS_fnc_returnParents;
-  //UNIFORM
-  if ("Uniform_Base" in _allParents) then {
-    [1,_class] call _prepareMAN;
-  };
-  if (count (_allParents - ["Vest_NoCamo_Base","Vest_Camo_Base"]) < count _allParents) then {
-    [2,_class] call _prepareMAN;
-  };
-  if (count (_allParents - ["H_HelmetIA","H_HelmetB","H_HelmetB_paint","H_HelmetB_light"]) < count _allParents) then {
-    [3,_class] call _prepareMAN;
-  };
-  if ("RifleCore" in _allParents) then {
-    [1,_class] call _prepareWHolder;
-  };
-  if ("LauncherCore" in _allParents) then {
-    [2,_class] call _prepareWHolder;
-  };
-  if ("PistolCore" in _allParents) then {
-    [3,_class] call _prepareWHolder;
-  };
-
-
 
   _mod = if (configSourceMod(configFile >> "CfgWeapons" >> _class) == "") then { "vanilla"; } else { configSourceMod(configFile >> "CfgWeapons" >> _class); };
 
@@ -208,16 +221,40 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   _classMuzzleCoef = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "MuzzleCoef");
 
 
+  //UNIFORM
+  if ("Uniform_Base" in _allParents) then {
+    [1,_class] call _prepareMAN;
+  };
+  if (count (_allParents - ["Vest_NoCamo_Base","Vest_Camo_Base"]) < count _allParents) then {
+    [2,_class] call _prepareMAN;
+  };
+  if (count (_allParents - ["H_HelmetIA","H_HelmetB","H_HelmetB_paint","H_HelmetB_light"]) < count _allParents) then {
+    [3,_class] call _prepareMAN;
+  };
+  //weapons
+  if ("RifleCore" in _allParents) then {
+    [1,_class] call _prepareWHolder;
+  };
+  if ("LauncherCore" in _allParents) then {
+    [2,_class] call _prepareWHolder;
+  };
+  if ("PistolCore" in _allParents) then {
+    [3,_class] call _prepareWHolder;
+  };
+
+
   if (_isEquip) then {
     _hint_txt_4 = "Protection: " + str _ItemInfo_armor + "/" + str _ItemInfo_passthrough;
-    _hint_txt_5 = "Container: " + _containerClass;
-    _hint_txt_6 = "Mass : " + str _ItemInfo_mass;
+    _hint_txt_5 = "UniformClass: " + _ItemInfo_uniformClass;
+    _hint_txt_6 = "Mass: " + str _ItemInfo_mass;
+    _hint_txt_7 = "Space: " + str _cargoVolume;
   };
 
   if (_isWeapon) then {
     _hint_txt_4 = "Range: " + str _minRange + " - " + str _midRange + " - " + str _maxRange;
     _hint_txt_5 = "Modes: " + str _modes;
     _hint_txt_6 = "Mass: " + str _WeaponSlotsInfo_mass;
+    _hint_txt_7 = [_magazines,"Mags"] call FNC_CONV_ARRAY_LIST;
   };
 
   hint parseText format ["
@@ -225,19 +262,21 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     <t align='center' color='#666666'>------------------------------</t><br/><br/>
     <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%2</t><br/>
     <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'><img size='4' image='%3'/></t><br/>
-    <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%4</t><br/>
+    <t align='left' color='#f39403' shadow='1' shadowColor='#000000'>%4</t><br/>
     <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%5</t><br/>
     <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%6</t><br/>
     <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%7</t><br/>
+    <t align='left' color='#666c3f' shadow='1' shadowColor='#000000'>%8</t><br/>
     ",
        _displayName,
        _class,
        getText(configFile >> "CfgWeapons" >> _class >> "picture"),
+       "Mod: " + _mod,
        _hint_txt_4,
        _hint_txt_5,
        _hint_txt_6,
-       "Mod: " + _mod];
-
+       _hint_txt_7
+       ];
 
 
   //TODO

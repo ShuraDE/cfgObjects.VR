@@ -8,6 +8,7 @@ FNC_ROTATE = compile preprocessFileLineNumbers "fnc_rotate.sqf";
 FNC_ROTATE_SIMPLE = compile preprocessFileLineNumbers "fnc_rotate_simple.sqf";
 
 FNC_REPLACE = compile preprocessFileLineNumbers "fnc_replace.sqf";
+FNC_CONV_ARRAY_LIST = compile preprocessFileLineNumbers "fnc_arrayToList.sqf";
 
 ADL_CLEAN_UP = compile preprocessFileLineNumbers "fnc_cleanUp.sqf";
 ADL_SPAWN_OBJ = compile preprocessFileLineNumbers "fnc_spawnObject.sqf";
@@ -24,7 +25,7 @@ GEN_cfgWeapons = true;
 
 //only mods ? which modfolder(s) named like installed
 GET_CONFIG_BY_MOD = true;
-ACTIVE_MODLIST =  ['@RHSUSF'];
+ACTIVE_MODLIST =  ['@arc_gerup'];
 //enable screen shots
 ENABLE_SCREEN = true;
 
