@@ -244,22 +244,22 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
 
   if (_isEquip) then {
-    _hint_txt_4 = "Protection: " + str _ItemInfo_armor + "/" + str _ItemInfo_passthrough;
-    _hint_txt_5 = "UniformClass: " + _ItemInfo_uniformClass;
-    _hint_txt_6 = "Mass: " + str _ItemInfo_mass;
-    _hint_txt_7 = "Space: " + str _cargoVolume;
+    _hint_txt_4 = "Mass: " + str _ItemInfo_mass;
+    _hint_txt_5 = "Space: " + str _cargoVolume;
+    _hint_txt_6 = "Protection: " + str _ItemInfo_armor + "/" + str _ItemInfo_passthrough;
+    _hint_txt_7 = "UniformClass: " + _ItemInfo_uniformClass;
   };
 
   if (_isWeapon) then {
-    _hint_txt_4 = "Range: " + str _minRange + " - " + str _midRange + " - " + str _maxRange;
-    _hint_txt_5 = "Modes: " + str _modes;
-    _hint_txt_6 = "Mass: " + str _WeaponSlotsInfo_mass;
+    _hint_txt_4 = "Mass: " + str _WeaponSlotsInfo_mass;
+    _hint_txt_5 = "Range: " + str _minRange + " - " + str _midRange + " - " + str _maxRange;
+    _hint_txt_6 = "Modes: " + str _modes;
     _hint_txt_7 = [_magazines,"Mags"] call FNC_CONV_ARRAY_LIST;
   };
 
   hint parseText format ["
     <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%1</t><br/>
-    <t align='center' color='#666666'>------------------------------</t><br/><br/>
+    <t align='center' color='#666666'>------------------------------</t><br/>
     <t align='center' color='#f39403' shadow='1' shadowColor='#000000'>%2</t><br/>
     <t align='center' color='#666c3f' shadow='1' shadowColor='#000000'><img size='4' image='%3'/></t><br/>
     <t align='left' color='#f39403' shadow='1' shadowColor='#000000'>%4</t><br/>
