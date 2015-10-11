@@ -206,6 +206,11 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
   //weapons
   //class LinkedItemsOptic	-	class LinkedItemsAcc - class LinkedItemsMuzzle - class LinkedItemsUnder
   _classLinkedItems = (configFile >> "CfgWeapons" >> _class >> "LinkedItems");
+  _classLinkItemsOptic = (_classLinkedItems >> "LinkedItemsOptic"); //CowsSlot
+  _classLinkedItemsAcc = (_classLinkedItems >> "LinkedItemsAcc"); //PointerSlot
+  _classLinkedItemsUnder = (_classLinkedItems >> "LinkedItemsUnder"); //UnderBarrelSlot
+  _classLinkedItemsMuzzle = (_classLinkedItems >> "LinkedItemsMuzzle"); //MuzzleSlot
+
   _classWeaponSlotsInfo = (configFile >> "CfgWeapons" >> _class >> "WeaponSlotsInfo");
 
   _classMuzzleSlot = (configFile >> "CfgWeapons" >> _class >> "WeaponSlotsInfo" >> "MuzzleSlot");
@@ -215,8 +220,8 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
 
   _classOpticsModes = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "OpticsModes");
   _classPointer = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "Pointer");
-  _classMagazineCoef = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "FlashLight");
-  _classFlashLight = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "MagazineCoef");
+  _classMagazineCoef = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "MagazineCoef");
+  _classFlashLight = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "FlashLight");
   _classAmmoCoef = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "AmmoCoef");
   _classMuzzleCoef = (configFile >> "CfgWeapons" >> _class >> "ItemInfo" >> "MuzzleCoef");
 
