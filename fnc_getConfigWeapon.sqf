@@ -252,7 +252,7 @@ for[{_i = 1}, {_i < count(_cfg)}, {_i=_i+1}] do
     _hint_txt_4 = "Mass: " + str _ItemInfo_mass;
     _hint_txt_5 = "Space: " + str _cargoVolume;
     _hint_txt_6 = "Protection: " + str _ItemInfo_armor + "/" + str _ItemInfo_passthrough;
-    _hint_txt_7 = "UniformClass: " + _ItemInfo_uniformClass;
+    _hint_txt_7 = "ContainerClass: " + _ItemInfo_containerClass;
   };
 
   if (_isWeapon) then {
